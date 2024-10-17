@@ -4,6 +4,7 @@ import 'package:nepse_trends/Screens/dashboard_screen.dart';
 import 'package:nepse_trends/Screens/data_analytics_screen.dart';
 import 'package:nepse_trends/Screens/floorsheet_screen.dart';
 import 'package:nepse_trends/Screens/ipo_result_screen.dart';
+import 'package:nepse_trends/Screens/login_screen.dart';
 import 'package:nepse_trends/Screens/market_screen.dart';
 import 'package:nepse_trends/Screens/mega_offers_screen.dart';
 import 'package:nepse_trends/Screens/new_shares_screen.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => DashboardScreen(),
+        '/': (context) => GoogleLoginScreen(),
+        '/dashboard_screen': (context) => DashboardScreen(),
         '/news': (context) => NewsScreen(),
         '/market': (context) => MarketScreen(),
         '/floorsheet': (context) => FloorsheetScreen(),
