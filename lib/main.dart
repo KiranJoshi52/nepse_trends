@@ -25,7 +25,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => GoogleLoginScreen(),
+        // '/': (context) => GoogleLoginScreen(),
+        '/': (context) => DashboardScreen(),
         '/dashboard_screen': (context) => DashboardScreen(),
         '/news': (context) => NewsScreen(),
         '/market': (context) => MarketScreen(),
