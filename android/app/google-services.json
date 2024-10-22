@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "524413345656",
+    "project_id": "fcmtest2-1cb4b",
+    "storage_bucket": "fcmtest2-1cb4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524413345656:android:bbae0b98a44fdc4583728d",
+        "android_client_info": {
+          "package_name": "keronz.example.fcmtest2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524413345656-a611adsldov1c3i945ct84dsbe9lvssv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "keronz.example.fcmtest2",
+            "certificate_hash": "986740f6a1ce99fcb9775d01d8ba0eb909d65e9f"
+          }
+        },
+        {
+          "client_id": "524413345656-qnbbg0on0n1kfoj8cepo1r7apfk6nenf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVkqeK1Ywj38pD2LHTwAvRvGfSrP_0Pdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524413345656-2181d9kf4480kdenusdn04mpvokgiq5k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "524413345656-gldf4e0qc9evfdpb52mj3g3i219qevln.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "keronz.example.fcmtest2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:nepse_trends/Screens/ai_charts_screen.dart';
+import 'package:nepse_trends/Screens/check_screen.dart';
 import 'package:nepse_trends/Screens/dashboard_screen.dart';
 import 'package:nepse_trends/Screens/data_analytics_screen.dart';
 import 'package:nepse_trends/Screens/floorsheet_screen.dart';
@@ -15,7 +17,9 @@ import 'package:nepse_trends/Screens/share_calculator_screen.dart';
 import 'package:nepse_trends/Screens/share_training_screen.dart';
 import 'package:nepse_trends/Screens/today_price_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -27,6 +31,7 @@ class MyApp extends StatelessWidget {
       routes: {
         // '/': (context) => GoogleLoginScreen(),
         '/': (context) => DashboardScreen(),
+        '/': (context) => CheckScreen(),
         '/dashboard_screen': (context) => DashboardScreen(),
         '/news': (context) => NewsScreen(),
         '/market': (context) => MarketScreen(),
