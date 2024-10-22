@@ -1,49 +1,43 @@
 {
   "project_info": {
-    "project_number": "524413345656",
-    "project_id": "fcmtest2-1cb4b",
-    "storage_bucket": "fcmtest2-1cb4b.appspot.com"
+    "project_number": "141842474362",
+    "firebase_url": "https://check-434d2-default-rtdb.firebaseio.com",
+    "project_id": "check-434d2",
+    "storage_bucket": "check-434d2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:524413345656:android:bbae0b98a44fdc4583728d",
+        "mobilesdk_app_id": "1:141842474362:android:f07153b8b2a432b060a2c3",
         "android_client_info": {
-          "package_name": "keronz.example.fcmtest2"
+          "package_name": "com.example.nepse_trends"
         }
       },
       "oauth_client": [
         {
-          "client_id": "524413345656-a611adsldov1c3i945ct84dsbe9lvssv.apps.googleusercontent.com",
+          "client_id": "141842474362-veoph8e1vugqnogfcr4m780mi4g4o422.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "keronz.example.fcmtest2",
+            "package_name": "com.example.nepse_trends",
             "certificate_hash": "986740f6a1ce99fcb9775d01d8ba0eb909d65e9f"
           }
         },
         {
-          "client_id": "524413345656-qnbbg0on0n1kfoj8cepo1r7apfk6nenf.apps.googleusercontent.com",
+          "client_id": "141842474362-4jcmbchkdettmdmlkr2b3m1evf34jpd9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBVkqeK1Ywj38pD2LHTwAvRvGfSrP_0Pdo"
+          "current_key": "AIzaSyCCJuHdJ2i-kMC4fkrysoREirTN30VAI40"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "524413345656-2181d9kf4480kdenusdn04mpvokgiq5k.apps.googleusercontent.com",
+              "client_id": "141842474362-1e4qoakrstuspn5nef3poe1dt94m34hm.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "524413345656-gldf4e0qc9evfdpb52mj3g3i219qevln.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "keronz.example.fcmtest2"
-              }
             }
           ]
         }
