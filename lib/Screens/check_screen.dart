@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nepse_trends/Screens/dashboard_screen.dart';
 import 'package:nepse_trends/services/auth_services/auth_services.dart';
 
 class CheckScreen extends StatelessWidget {
@@ -16,8 +17,19 @@ class CheckScreen extends StatelessWidget {
             // Add your onPressed action here
             print('Button Pressed!');
             final credential = await signInWithGoogle();
-            print('----- credentials ------');
-            print(credential);
+            // print('----- credentials ------');
+            // print(credential);
+            if (credential != null) {
+              print('----- credentials ------');
+              print(credential);
+              // Navigate to the HomeScreen after successful login
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DashboardScreen()),
+              );
+            } else {
+              print('Login failed');
+            }
           },
           child: Text('Click Me'),
         ),

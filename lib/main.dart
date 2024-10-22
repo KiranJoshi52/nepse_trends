@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // '/': (context) => GoogleLoginScreen(),
-        '/': (context) => DashboardScreen(),
+        // '/': (context) => DashboardScreen(),
         '/': (context) => CheckScreen(),
         '/dashboard_screen': (context) => DashboardScreen(),
         '/news': (context) => NewsScreen(),
