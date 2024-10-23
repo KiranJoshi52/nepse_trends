@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:nepse_trends/Screens/Inside%20Screens/buy_screen.dart';
 import 'package:nepse_trends/Screens/ai_charts_screen.dart';
 import 'package:nepse_trends/Screens/check_screen.dart';
 import 'package:nepse_trends/Screens/dashboard_screen.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
         '/floorsheet': (context) => FloorsheetScreen(),
         '/todays_price': (context) => TodaysPriceScreen(),
         '/portfolio': (context) => PortfolioScreen(),
-        '/share_calculator': (context) => ShareCalculatorScreen(),
+        // '/share_calculator': (context) => ShareCalculatorScreen(),
+        '/share_calculator': (context) => BuyScreen(),
         '/newsletter': (context) => NewsletterScreen(),
         '/data_analytics': (context) => DataAnalyticsScreen(),
         '/new_shares': (context) => NewSharesScreen(),
