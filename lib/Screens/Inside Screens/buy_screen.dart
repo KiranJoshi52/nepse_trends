@@ -14,63 +14,16 @@ class _BuyScreenState extends State<BuyScreen> {
 
   String _totalPrice = '';
 
-  // void _calculate() {
-  //   if (_formKey.currentState?.validate() ?? false) {
-  //     double price = double.parse(_priceController.text);
-  //     int quantity = int.parse(_quantityController.text);
-  //     double purchaseValue = price * quantity;
-  //     double total = (price * quantity) + 16.56 + 0.69 + 25;
-
-  //     setState(() {
-  //       _totalPrice = "Purchase Value: ${purchaseValue}\n" +
-  //           "Broker Commission: 16.56\n" +
-  //           "SEBON Commission: 0.69\n" +
-  //           "DP Charge: 25\n" +
-  //           "Total Amount: ${total.toStringAsFixed(2)}";
-  //     });
-  //   }
-  // }
   void _calculate() {
     if (_formKey.currentState?.validate() ?? false) {
       double price = double.parse(_priceController.text);
       int quantity = int.parse(_quantityController.text);
-      double purchaseValue = price * quantity;
+      
       double total = (price * quantity) + 16.56 + 0.69 + 25;
 
       setState(() {
-        _totalPrice = purchaseValue.toStringAsFixed(2); // Only store the value
+        _totalPrice = total.toStringAsFixed(2);
       });
-
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Calculation Result"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildDetailRow(
-                    "Purchase Value", purchaseValue.toStringAsFixed(2)),
-                _buildDetailRow("Broker Commission", "16.56"),
-                _buildDetailRow("SEBON Commission", "0.69"),
-                _buildDetailRow("DP Charge", "25"),
-                const Divider(),
-                _buildDetailRow("Total Amount", total.toStringAsFixed(2),
-                    isBold: true),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("OK"),
-              ),
-            ],
-          );
-        },
-      );
     }
 }
 
@@ -96,7 +49,6 @@ Widget _buildDetailRow(String label, String value, {bool isBold = false}) {
       ),
     );
 }
-
 
   void _reset() {
     _formKey.currentState?.reset(); // Reset form and validation state
@@ -188,11 +140,24 @@ Widget _buildDetailRow(String label, String value, {bool isBold = false}) {
                 ],
               ),
               const SizedBox(height: 16),
-              if (_totalPrice.isNotEmpty)
-                Text(
-                  _totalPrice,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+              if (_totalPrice.isNotEmpty) 
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    _buildDetailRow(
+                        "Purchase Value",
+                        (double.parse(_priceController.text) *
+                                int.parse(_quantityController.text))
+                            .toStringAsFixed(2)),
+                    _buildDetailRow("Broker Commission", "16.56"),
+                    _buildDetailRow("SEBON Commission", "0.69"),
+                    _buildDetailRow("DP Charge", "25"),
+                    const Divider(),
+                    _buildDetailRow("Total Amount", _totalPrice, isBold: true),
+                  ],
                 ),
             ],
           ),
