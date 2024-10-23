@@ -29,11 +29,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
         // '/': (context) => GoogleLoginScreen(),
         // '/': (context) => DashboardScreen(),
-        '/': (context) => CheckScreen(),
+        '/': (context) => const CheckScreen(),
         '/dashboard_screen': (context) => DashboardScreen(),
         '/news': (context) => NewsScreen(),
         '/market': (context) => MarketScreen(),

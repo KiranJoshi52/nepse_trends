@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SellScreen extends StatefulWidget {
-  const SellScreen({super.key});
+  const SellScreen({Key? key}) : super(key: key);
 
   @override
   _SellScreenState createState() => _SellScreenState();
@@ -14,26 +14,24 @@ class _SellScreenState extends State<SellScreen> {
   bool _isIPO = false;
   bool _isIndividual = false;
   bool _isInstitutional = false;
-  bool _isTax75 = false;
-  bool _isTax5 = false;
+  String? _selectedTaxRate;
 
-  final TextEditingController _purchasePriceController =
-      TextEditingController();
+  final TextEditingController _purchasePriceController = TextEditingController();
   final TextEditingController _sellPriceController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
 
   void _calculate() {
     if (_formKey.currentState!.validate()) {
-      double purchasePrice = double.parse(_purchasePriceController.text);
-      double sellPrice = double.parse(_sellPriceController.text);
-      int quantity = int.parse(_quantityController.text);
-      double capitalGainTax = _isTax75 ? 7.5 : (_isTax5 ? 5.0 : 0.0);
+      final double purchasePrice = double.parse(_purchasePriceController.text);
+      final double sellPrice = double.parse(_sellPriceController.text);
+      final int quantity = int.parse(_quantityController.text);
+      final double capitalGainTax = _selectedTaxRate == '7.5%' ? 7.5 : (_selectedTaxRate == '5%' ? 5.0 : 0.0);
 
-      double totalPurchase = purchasePrice * quantity;
-      double totalSell = sellPrice * quantity;
-      double profit = totalSell - totalPurchase;
-      double taxAmount = (profit * capitalGainTax) / 100;
-      double finalProfit = profit - taxAmount;
+      final double totalPurchase = purchasePrice * quantity;
+      final double totalSell = sellPrice * quantity;
+      final double profit = totalSell - totalPurchase;
+      final double taxAmount = (profit * capitalGainTax) / 100;
+      final double finalProfit = profit - taxAmount;
 
       showDialog(
         context: context,
@@ -54,18 +52,57 @@ class _SellScreenState extends State<SellScreen> {
   }
 
   void _reset() {
+    _formKey.currentState!.reset();
     setState(() {
-      _formKey.currentState!.reset();
       _isSecondary = false;
       _isIPO = false;
       _isIndividual = false;
       _isInstitutional = false;
-      _isTax75 = false;
-      _isTax5 = false;
+      _selectedTaxRate = null;
       _purchasePriceController.clear();
       _sellPriceController.clear();
       _quantityController.clear();
     });
+  }
+
+  String? _validateInput(String? value, String fieldName) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter the $fieldName';
+    }
+    if (double.tryParse(value) == null) {
+      return 'Please enter a valid number';
+    }
+    return null;
+  }
+
+  Widget _buildCheckbox(String title, bool value, ValueChanged<bool?> onChanged) {
+    return Row(
+      children: [
+        Checkbox(
+          value: value,
+          shape: const CircleBorder(),
+          onChanged: onChanged,
+        ),
+        Text(title),
+      ],
+    );
+  }
+
+  Widget _buildTaxCheckbox(String title, String taxRate) {
+    return Row(
+      children: [
+        Checkbox(
+          value: _selectedTaxRate == taxRate,
+          shape: const CircleBorder(),
+          onChanged: (bool? value) {
+            setState(() {
+              _selectedTaxRate = value! ? taxRate : null;
+            });
+          },
+        ),
+        Text(title),
+      ],
+    );
   }
 
   @override
@@ -80,196 +117,83 @@ class _SellScreenState extends State<SellScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              // Buy Type (Horizontal Checkboxes)
               const Text('Buy Type'),
               Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _isSecondary,
-                        shape: const CircleBorder(), // Makes checkbox round
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isSecondary = value ?? false;
-                          });
-                        },
-                      ),
-                      const Text('Secondary'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _isIPO,
-                        shape: const CircleBorder(),
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isIPO = value ?? false;
-                          });
-                        },
-                      ),
-                      const Text('IPO'),
-                    ],
-                  ),
+                  _buildCheckbox('Secondary', _isSecondary, (value) {
+                    setState(() => _isSecondary = value ?? false);
+                  }),
+                  _buildCheckbox('IPO', _isIPO, (value) {
+                    setState(() => _isIPO = value ?? false);
+                  }),
                 ],
               ),
-              // Purchased Price
               TextFormField(
                 controller: _purchasePriceController,
                 decoration: const InputDecoration(
                   labelText: 'Purchased Price / Per Share',
                 ),
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the purchased price';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
-                  return null;
-                },
+                validator: (value) => _validateInput(value, 'purchased price'),
               ),
-              // Sell Price
               TextFormField(
                 controller: _sellPriceController,
                 decoration: const InputDecoration(
                   labelText: 'Sell Price / Per Share',
                 ),
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the sell price';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
-                  return null;
-                },
+                validator: (value) => _validateInput(value, 'sell price'),
               ),
-              // Quantity
               TextFormField(
                 controller: _quantityController,
                 decoration: const InputDecoration(
                   labelText: 'Quantity',
                 ),
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the quantity';
-                  }
-                  if (int.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
-                  return null;
-                },
+                validator: (value) => _validateInput(value, 'quantity'),
               ),
-              // Investor Type (Horizontal Checkboxes)
               const Text('Investor Type'),
               Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _isIndividual,
-                        shape: const CircleBorder(),
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isIndividual = value ?? false;
-                          });
-                        },
-                      ),
-                      const Text('Individual'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _isInstitutional,
-                        shape: const CircleBorder(),
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isInstitutional = value ?? false;
-                          });
-                        },
-                      ),
-                      const Text('Institutional'),
-                    ],
-                  ),
+                  _buildCheckbox('Individual', _isIndividual, (value) {
+                    setState(() => _isIndividual = value ?? false);
+                  }),
+                  _buildCheckbox('Institutional', _isInstitutional, (value) {
+                    setState(() => _isInstitutional = value ?? false);
+                  }),
                 ],
               ),
-              // Capital Gain Tax (Horizontal Checkboxes)
               const Text('Capital Gain Tax'),
               Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _isTax75,
-                        shape: const CircleBorder(),
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isTax75 = value ?? false;
-                            if (_isTax75) _isTax5 = false;
-                          });
-                        },
-                      ),
-                      const Text('7.5%'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _isTax5,
-                        shape: const CircleBorder(),
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isTax5 = value ?? false;
-                            if (_isTax5) _isTax75 = false;
-                          });
-                        },
-                      ),
-                      const Text('5%'),
-                    ],
-                  ),
+                  _buildTaxCheckbox('7.5%', '7.5%'),
+                  _buildTaxCheckbox('5%', '5%'),
                 ],
               ),
-              // Calculate and Reset Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
                     onPressed: _calculate,
-                    child: const Text(
-                      'Calculate',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    child: const Text('Calculate', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            8.0), // Adjust the radius here
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 20.0,
-                  ),
+                  const SizedBox(width: 20.0),
                   ElevatedButton(
                     onPressed: _reset,
-                    child: const Text(
-                      'Reset',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    child: const Text('Reset', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            8.0), // Adjust the radius here
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                   ),
