@@ -32,16 +32,16 @@ class ShareCalculatorScreen extends StatelessWidget {
           } else {
             // For smaller screens, use tabs
             return const DefaultTabController(
-              length: 5,
+              length: 4,
               child: Column(
                 children: [
                   TabBar(
+                    // isScrollable: true,
                     tabs: [
                       Tab(text: 'Buy'),
                       Tab(text: 'Sell'),
-                      Tab(text: 'Sell'),
-                      Tab(text: 'Sell'),
-                      Tab(text: 'Sell'),
+                      Tab(text: 'Right Share Adjustment'),
+                      Tab(text: 'Bonus Share Adjustment'),
                     ],
                     labelColor: Colors.orange,
                     unselectedLabelColor: Colors.white,
@@ -50,8 +50,7 @@ class ShareCalculatorScreen extends StatelessWidget {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        BuyScreen(), // Buy Screen for smaller screens
-                        SellScreen(), // Sell Screen for smaller screens
+                        BuyScreen(), // Sell Screen for smaller screens
                         SellScreen(), // Sell Screen for smaller screens
                         SellScreen(), // Sell Screen for smaller screens
                         SellScreen(), // Sell Screen for smaller screens
