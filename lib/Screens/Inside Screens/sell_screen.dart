@@ -10,50 +10,56 @@ class SellScreen extends StatefulWidget {
 class _SellScreenState extends State<SellScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  // Set default values for the radio buttons
-  String? _selectedBuyType = 'Secondary';  // Default value
-  String? _selectedInvestorType = 'Individual';  // Default value
-  String? _selectedTaxRate = '7.5%';  // Default value
+  // Default values for the radio buttons
+  String _selectedBuyType = 'Secondary';  
+  String _selectedInvestorType = 'Individual';  
+  String _selectedTaxRate = '7.5%';
 
   final TextEditingController _purchasePriceController = TextEditingController();
   final TextEditingController _sellPriceController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
 
+  // Calculation logic
   void _calculate() {
     if (_formKey.currentState!.validate()) {
-      final double purchasePrice = double.parse(_purchasePriceController.text);
-      final double sellPrice = double.parse(_sellPriceController.text);
-      final int quantity = int.parse(_quantityController.text);
-      final double capitalGainTax = _selectedTaxRate == '7.5%' ? 7.5 : (_selectedTaxRate == '5%' ? 5.0 : 0.0);
+      final purchasePrice = double.parse(_purchasePriceController.text);
+      final sellPrice = double.parse(_sellPriceController.text);
+      final quantity = int.parse(_quantityController.text);
+      final taxRate = double.parse(_selectedTaxRate.replaceAll('%', ''));
 
-      final double totalPurchase = purchasePrice * quantity;
-      final double totalSell = sellPrice * quantity;
-      final double profit = totalSell - totalPurchase;
-      final double taxAmount = (profit * capitalGainTax) / 100;
-      final double finalProfit = profit - taxAmount;
+      final totalPurchase = purchasePrice * quantity;
+      final totalSell = sellPrice * quantity;
+      final profit = totalSell - totalPurchase;
+      final taxAmount = (profit * taxRate) / 100;
+      final finalProfit = profit - taxAmount;
 
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Calculation Result'),
-            content: Text('Final Profit: \$${finalProfit.toStringAsFixed(2)}'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      _showResult(finalProfit);
     }
   }
 
+  // Result dialog
+  void _showResult(double finalProfit) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Calculation Result'),
+          content: Text('Final Profit: \$${finalProfit.toStringAsFixed(2)}'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Reset fields
   void _reset() {
     _formKey.currentState!.reset();
     setState(() {
-      // Reset to the default values after resetting the form
       _selectedBuyType = 'Secondary';
       _selectedInvestorType = 'Individual';
       _selectedTaxRate = '7.5%';
@@ -63,6 +69,7 @@ class _SellScreenState extends State<SellScreen> {
     });
   }
 
+  // Input validation
   String? _validateInput(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
       return 'Please enter the $fieldName';
@@ -73,33 +80,34 @@ class _SellScreenState extends State<SellScreen> {
     return null;
   }
 
-  Widget _buildRadio(String title, String value, String? groupValue,
-      ValueChanged<String?> onChanged) {
-    return Row(
+  // Reusable radio button builder
+  Widget _buildRadioGroup({
+    required String title,
+    required List<String> options,
+    required String groupValue,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Radio<String>(
-          value: value,
-          groupValue: groupValue,
-          onChanged: onChanged,
-        ),
         Text(title),
-      ],
-    );
-  }
-
-  Widget _buildTaxRadio(String title, String taxRate) {
-    return Row(
-      children: [
-        Radio<String>(
-          value: taxRate,
-          groupValue: _selectedTaxRate,
-          onChanged: (String? value) {
-            setState(() {
-              _selectedTaxRate = value;
-            });
-          },
+        Row(
+          children: options.map((option) {
+            return Expanded(
+              child: Row(
+                children: [
+                  Radio<String>(
+                    value: option,
+                    groupValue: groupValue,
+                    onChanged: onChanged,
+                    activeColor: Colors.green,
+                  ),
+                  Text(option),
+                ],
+              ),
+            );
+          }).toList(),
         ),
-        Text(title),
       ],
     );
   }
@@ -116,21 +124,13 @@ class _SellScreenState extends State<SellScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              const Text('Buy Type'),
-              Row(
-                children: [
-                  _buildRadio('Secondary', 'Secondary', _selectedBuyType,
-                      (String? value) {
-                    setState(() {
-                      _selectedBuyType = value;
-                    });
-                  }),
-                  _buildRadio('IPO', 'IPO', _selectedBuyType, (String? value) {
-                    setState(() {
-                      _selectedBuyType = value;
-                    });
-                  }),
-                ],
+              _buildRadioGroup(
+                title: 'Buy Type',
+                options: ['Secondary', 'IPO'],
+                groupValue: _selectedBuyType,
+                onChanged: (value) => setState(() {
+                  _selectedBuyType = value!;
+                }),
               ),
               TextFormField(
                 controller: _purchasePriceController,
@@ -156,30 +156,21 @@ class _SellScreenState extends State<SellScreen> {
                 keyboardType: TextInputType.number,
                 validator: (value) => _validateInput(value, 'quantity'),
               ),
-              const Text('Investor Type'),
-              Row(
-                children: [
-                  _buildRadio('Individual', 'Individual', _selectedInvestorType,
-                      (String? value) {
-                    setState(() {
-                      _selectedInvestorType = value;
-                    });
-                  }),
-                  _buildRadio(
-                      'Institutional', 'Institutional', _selectedInvestorType,
-                      (String? value) {
-                    setState(() {
-                      _selectedInvestorType = value;
-                    });
-                  }),
-                ],
+              _buildRadioGroup(
+                title: 'Investor Type',
+                options: ['Individual', 'Institutional'],
+                groupValue: _selectedInvestorType,
+                onChanged: (value) => setState(() {
+                  _selectedInvestorType = value!;
+                }),
               ),
-              const Text('Capital Gain Tax'),
-              Row(
-                children: [
-                  _buildTaxRadio('7.5%', '7.5%'),
-                  _buildTaxRadio('5%', '5%'),
-                ],
+              _buildRadioGroup(
+                title: 'Capital Gain Tax',
+                options: ['7.5%', '5%'],
+                groupValue: _selectedTaxRate,
+                onChanged: (value) => setState(() {
+                  _selectedTaxRate = value!;
+                }),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,

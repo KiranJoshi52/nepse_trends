@@ -62,9 +62,9 @@ Widget _buildDetailRow(String label, String value, {bool isBold = false}) {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Buy Screen'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Buy Screen'),
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
