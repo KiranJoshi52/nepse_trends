@@ -10,9 +10,10 @@ class SellScreen extends StatefulWidget {
 class _SellScreenState extends State<SellScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  String? _selectedBuyType;
-  String? _selectedInvestorType;
-  String? _selectedTaxRate;
+  // Set default values for the radio buttons
+  String? _selectedBuyType = 'Secondary';  // Default value
+  String? _selectedInvestorType = 'Individual';  // Default value
+  String? _selectedTaxRate = '7.5%';  // Default value
 
   final TextEditingController _purchasePriceController = TextEditingController();
   final TextEditingController _sellPriceController = TextEditingController();
@@ -52,9 +53,10 @@ class _SellScreenState extends State<SellScreen> {
   void _reset() {
     _formKey.currentState!.reset();
     setState(() {
-      _selectedBuyType = null;
-      _selectedInvestorType = null;
-      _selectedTaxRate = null;
+      // Reset to the default values after resetting the form
+      _selectedBuyType = 'Secondary';
+      _selectedInvestorType = 'Individual';
+      _selectedTaxRate = '7.5%';
       _purchasePriceController.clear();
       _sellPriceController.clear();
       _quantityController.clear();
@@ -175,12 +177,6 @@ class _SellScreenState extends State<SellScreen> {
               const Text('Capital Gain Tax'),
               Row(
                 children: [
-                  // Expanded(
-                  //   child: _buildTaxRadio('7.5%', '7.5%'),
-                  // ),
-                  // Expanded(
-                  //   child: _buildTaxRadio('5%', '5%'),
-                  // ),
                   _buildTaxRadio('7.5%', '7.5%'),
                   _buildTaxRadio('5%', '5%'),
                 ],
