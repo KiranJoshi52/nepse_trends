@@ -16,6 +16,9 @@ class ShareCalculatorScreen extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+        iconTheme: const IconThemeData(
+          color: Colors.white, // Change this to your desired color
+        ),
       ),
       backgroundColor: Colors.green, 
       body: LayoutBuilder(
