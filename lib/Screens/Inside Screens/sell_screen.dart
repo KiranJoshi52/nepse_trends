@@ -115,9 +115,9 @@ class _SellScreenState extends State<SellScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sell Screen'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Sell Screen'),
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

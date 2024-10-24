@@ -9,8 +9,15 @@ class ShareCalculatorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Share Calculator'),
+        backgroundColor: Colors.green,
+        title: const Text(
+          'Share Calculator',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
       ),
+      backgroundColor: Colors.green, 
       body: LayoutBuilder(
         builder: (context, constraints) {
           // Check if the screen is wide (like in landscape or tablet mode)
@@ -25,19 +32,28 @@ class ShareCalculatorScreen extends StatelessWidget {
           } else {
             // For smaller screens, use tabs
             return const DefaultTabController(
-              length: 2,
+              length: 5,
               child: Column(
                 children: [
                   TabBar(
                     tabs: [
                       Tab(text: 'Buy'),
                       Tab(text: 'Sell'),
+                      Tab(text: 'Sell'),
+                      Tab(text: 'Sell'),
+                      Tab(text: 'Sell'),
                     ],
+                    labelColor: Colors.orange,
+                    unselectedLabelColor: Colors.white,
+                    indicatorColor: Colors.orange,
                   ),
                   Expanded(
                     child: TabBarView(
                       children: [
                         BuyScreen(), // Buy Screen for smaller screens
+                        SellScreen(), // Sell Screen for smaller screens
+                        SellScreen(), // Sell Screen for smaller screens
+                        SellScreen(), // Sell Screen for smaller screens
                         SellScreen(), // Sell Screen for smaller screens
                       ],
                     ),
