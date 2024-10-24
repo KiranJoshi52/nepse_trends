@@ -10,10 +10,8 @@ class SellScreen extends StatefulWidget {
 class _SellScreenState extends State<SellScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  bool _isSecondary = false;
-  bool _isIPO = false;
-  bool _isIndividual = false;
-  bool _isInstitutional = false;
+  String? _selectedBuyType;
+  String? _selectedInvestorType;
   String? _selectedTaxRate;
 
   final TextEditingController _purchasePriceController = TextEditingController();
@@ -54,10 +52,8 @@ class _SellScreenState extends State<SellScreen> {
   void _reset() {
     _formKey.currentState!.reset();
     setState(() {
-      _isSecondary = false;
-      _isIPO = false;
-      _isIndividual = false;
-      _isInstitutional = false;
+      _selectedBuyType = null;
+      _selectedInvestorType = null;
       _selectedTaxRate = null;
       _purchasePriceController.clear();
       _sellPriceController.clear();
@@ -75,12 +71,13 @@ class _SellScreenState extends State<SellScreen> {
     return null;
   }
 
-  Widget _buildCheckbox(String title, bool value, ValueChanged<bool?> onChanged) {
+  Widget _buildRadio(String title, String value, String? groupValue,
+      ValueChanged<String?> onChanged) {
     return Row(
       children: [
-        Checkbox(
+        Radio<String>(
           value: value,
-          shape: const CircleBorder(),
+          groupValue: groupValue,
           onChanged: onChanged,
         ),
         Text(title),
@@ -88,15 +85,15 @@ class _SellScreenState extends State<SellScreen> {
     );
   }
 
-  Widget _buildTaxCheckbox(String title, String taxRate) {
+  Widget _buildTaxRadio(String title, String taxRate) {
     return Row(
       children: [
-        Checkbox(
-          value: _selectedTaxRate == taxRate,
-          shape: const CircleBorder(),
-          onChanged: (bool? value) {
+        Radio<String>(
+          value: taxRate,
+          groupValue: _selectedTaxRate,
+          onChanged: (String? value) {
             setState(() {
-              _selectedTaxRate = value! ? taxRate : null;
+              _selectedTaxRate = value;
             });
           },
         ),
@@ -119,13 +116,17 @@ class _SellScreenState extends State<SellScreen> {
             children: [
               const Text('Buy Type'),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildCheckbox('Secondary', _isSecondary, (value) {
-                    setState(() => _isSecondary = value ?? false);
+                  _buildRadio('Secondary', 'Secondary', _selectedBuyType,
+                      (String? value) {
+                    setState(() {
+                      _selectedBuyType = value;
+                    });
                   }),
-                  _buildCheckbox('IPO', _isIPO, (value) {
-                    setState(() => _isIPO = value ?? false);
+                  _buildRadio('IPO', 'IPO', _selectedBuyType, (String? value) {
+                    setState(() {
+                      _selectedBuyType = value;
+                    });
                   }),
                 ],
               ),
@@ -155,22 +156,33 @@ class _SellScreenState extends State<SellScreen> {
               ),
               const Text('Investor Type'),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildCheckbox('Individual', _isIndividual, (value) {
-                    setState(() => _isIndividual = value ?? false);
+                  _buildRadio('Individual', 'Individual', _selectedInvestorType,
+                      (String? value) {
+                    setState(() {
+                      _selectedInvestorType = value;
+                    });
                   }),
-                  _buildCheckbox('Institutional', _isInstitutional, (value) {
-                    setState(() => _isInstitutional = value ?? false);
+                  _buildRadio(
+                      'Institutional', 'Institutional', _selectedInvestorType,
+                      (String? value) {
+                    setState(() {
+                      _selectedInvestorType = value;
+                    });
                   }),
                 ],
               ),
               const Text('Capital Gain Tax'),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildTaxCheckbox('7.5%', '7.5%'),
-                  _buildTaxCheckbox('5%', '5%'),
+                  // Expanded(
+                  //   child: _buildTaxRadio('7.5%', '7.5%'),
+                  // ),
+                  // Expanded(
+                  //   child: _buildTaxRadio('5%', '5%'),
+                  // ),
+                  _buildTaxRadio('7.5%', '7.5%'),
+                  _buildTaxRadio('5%', '5%'),
                 ],
               ),
               Row(
