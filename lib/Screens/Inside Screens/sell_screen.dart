@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SellScreen extends StatefulWidget {
-  const SellScreen({Key? key}) : super(key: key);
+  const SellScreen({super.key});
 
   @override
   _SellScreenState createState() => _SellScreenState();
@@ -186,24 +186,26 @@ class _SellScreenState extends State<SellScreen> {
                 children: [
                   ElevatedButton(
                     onPressed: _calculate,
-                    child: const Text('Calculate', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
+                    child: const Text('Calculate',
+                        style: TextStyle(color: Colors.white)),
                   ),
                   const SizedBox(width: 20.0),
                   ElevatedButton(
                     onPressed: _reset,
-                    child: const Text('Reset', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
+                    child: const Text('Reset',
+                        style: TextStyle(color: Colors.white)),
                   ),
                 ],
               ),
