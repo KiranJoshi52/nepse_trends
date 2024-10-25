@@ -15,6 +15,8 @@ import 'package:nepse_trends/Screens/portfolio_screen.dart';
 import 'package:nepse_trends/Screens/share_calculator_screen.dart';
 import 'package:nepse_trends/Screens/share_training_screen.dart';
 import 'package:nepse_trends/Screens/today_price_screen.dart';
+import 'package:nepse_trends/provider/sell_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +25,14 @@ void main() async {
   } catch (e) {
     print("Firebase initialization failed: $e");
   }
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SellProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
