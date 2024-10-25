@@ -3,24 +3,28 @@ import 'package:nepse_trends/widgets/build_drawer_item.dart';
 import 'package:nepse_trends/widgets/build_grid_item.dart';
 
 class DashboardScreen extends StatelessWidget {
+  static const String dashboardScreenRoute = '/dashboard_screen';
+
+  const DashboardScreen({super.key});
+    
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
           builder: (context) => IconButton(
-            icon: Icon(Icons.menu),
+            icon: const Icon(Icons.menu),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
-        title: Text('Dashboard'),
+        title: const Text('Dashboard'),
         backgroundColor: Colors.green,
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.green,
               ),

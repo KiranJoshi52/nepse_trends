@@ -31,20 +31,6 @@ class MyApp extends StatelessWidget {
 
   // Define routes as constants for better maintainability
   static const String checkScreenRoute = '/';
-  static const String dashboardScreenRoute = '/dashboard_screen';
-  static const String newsScreenRoute = '/news';
-  static const String marketScreenRoute = '/market';
-  static const String floorsheetScreenRoute = '/floorsheet';
-  static const String todaysPriceScreenRoute = '/todays_price';
-  static const String portfolioScreenRoute = '/portfolio';
-  static const String shareCalculatorScreenRoute = '/share_calculator';
-  static const String newsletterScreenRoute = '/newsletter';
-  static const String dataAnalyticsScreenRoute = '/data_analytics';
-  static const String newSharesScreenRoute = '/new_shares';
-  static const String ipoResultScreenRoute = '/ipo_result';
-  static const String shareTrainingScreenRoute = '/share_training';
-  static const String megaOffersScreenRoute = '/mega_offers';
-  static const String aiChartsScreenRoute = '/ai_charts';
 
   @override
   Widget build(BuildContext context) {
@@ -53,20 +39,25 @@ class MyApp extends StatelessWidget {
       initialRoute: checkScreenRoute,
       routes: {
         checkScreenRoute: (context) => const CheckScreen(),
-        dashboardScreenRoute: (context) => DashboardScreen(),
-        newsScreenRoute: (context) => NewsScreen(),
-        marketScreenRoute: (context) => MarketScreen(),
-        floorsheetScreenRoute: (context) => FloorsheetScreen(),
-        todaysPriceScreenRoute: (context) => TodaysPriceScreen(),
-        portfolioScreenRoute: (context) => PortfolioScreen(),
-        shareCalculatorScreenRoute: (context) => const ShareCalculatorScreen(),
-        newsletterScreenRoute: (context) => NewsletterScreen(),
-        dataAnalyticsScreenRoute: (context) => DataAnalyticsScreen(),
-        newSharesScreenRoute: (context) => NewSharesScreen(),
-        ipoResultScreenRoute: (context) => IpoResultScreen(),
-        shareTrainingScreenRoute: (context) => ShareTrainingScreen(),
-        megaOffersScreenRoute: (context) => MegaOffersScreen(),
-        aiChartsScreenRoute: (context) => AiChartsScreen(),
+        DashboardScreen.dashboardScreenRoute: (context) =>
+            const DashboardScreen(),
+        NewsScreen.newsScreenRoute: (context) => NewsScreen(),
+        MarketScreen.marketScreenRoute: (context) => MarketScreen(),
+        FloorsheetScreen.floorsheetScreenRoute: (context) => FloorsheetScreen(),
+        TodaysPriceScreen.todaysPriceScreenRoute: (context) =>
+            TodaysPriceScreen(),
+        PortfolioScreen.portfolioScreenRoute: (context) => PortfolioScreen(),
+        ShareCalculatorScreen.shareCalculatorScreenRoute: (context) =>
+            const ShareCalculatorScreen(),
+        NewsletterScreen.newsletterScreenRoute: (context) => NewsletterScreen(),
+        DataAnalyticsScreen.dataAnalyticsScreenRoute: (context) =>
+            DataAnalyticsScreen(),
+        NewSharesScreen.newSharesScreenRoute: (context) => NewSharesScreen(),
+        IpoResultScreen.ipoResultScreenRoute: (context) => IpoResultScreen(),
+        ShareTrainingScreen.shareTrainingScreenRoute: (context) =>
+            ShareTrainingScreen(),
+        MegaOffersScreen.megaOffersScreenRoute: (context) => MegaOffersScreen(),
+        AiChartsScreen.aiChartsScreenRoute: (context) => AiChartsScreen(),
       },
     );
   }

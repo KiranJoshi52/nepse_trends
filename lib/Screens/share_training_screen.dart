@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ShareTrainingScreen extends StatelessWidget {
+  static const String shareTrainingScreenRoute = '/share_training';
+    
   @override
   Widget build(BuildContext context) {
     return Scaffold(

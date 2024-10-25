@@ -3,7 +3,9 @@ import 'package:nepse_trends/Screens/Inside%20Screens/buy_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/sell_screen.dart';
 
 class ShareCalculatorScreen extends StatelessWidget {
-  const ShareCalculatorScreen({Key? key}) : super(key: key);
+  const ShareCalculatorScreen({super.key});
+
+  static const String shareCalculatorScreenRoute = '/share_calculator';
 
   @override
   Widget build(BuildContext context) {
