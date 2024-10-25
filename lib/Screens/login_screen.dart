@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleLoginScreen extends StatefulWidget {
+  const GoogleLoginScreen({super.key});
+
   @override
   _GoogleLoginScreenState createState() => _GoogleLoginScreenState();
 }
 
 class _GoogleLoginScreenState extends State<GoogleLoginScreen> {
-  GoogleSignIn _googleSignIn = GoogleSignIn(
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
     ],
