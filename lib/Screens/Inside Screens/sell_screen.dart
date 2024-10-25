@@ -241,9 +241,10 @@ class _SellScreenState extends State<SellScreen> {
                     _buildDetailRow('DP Charge', _dpCharge!),
                     const Divider(),
                     _buildDetailRow(
-                        'Total Amount Receivable', _totalReceivable!),
+                        'Total Amount Receivable (Rs.)', _totalReceivable!),
                     const Divider(),
-                    _buildDetailRow('Capital Gain Tax ($_selectedTaxRate)',
+                    _buildDetailRow(
+                        'Capital Gain Tax ($_selectedTaxRate) (Rs.)',
                         _capitalGainTax!),
                     const Divider(),
                     _buildDetailRow('Purchase Value', _purchaseValue!),
