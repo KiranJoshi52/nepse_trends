@@ -10,16 +10,22 @@ class SellScreen extends StatefulWidget {
 class _SellScreenState extends State<SellScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  // Default values for the radio buttons
-  String _selectedBuyType = 'Secondary';  
-  String _selectedInvestorType = 'Individual';  
+  String _selectedBuyType = 'Secondary';
+  String _selectedInvestorType = 'Individual';
   String _selectedTaxRate = '7.5%';
 
   final TextEditingController _purchasePriceController = TextEditingController();
   final TextEditingController _sellPriceController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
 
-  // Calculation logic
+  String? _totalAmount;
+  String? _brokerCommission;
+  String? _sebonCommission;
+  String? _dpCharge;
+  String? _totalReceivable;
+  String? _capitalGainTax;
+  String? _purchaseValue;
+
   void _calculate() {
     if (_formKey.currentState!.validate()) {
       final purchasePrice = double.parse(_purchasePriceController.text);
@@ -29,34 +35,29 @@ class _SellScreenState extends State<SellScreen> {
 
       final totalPurchase = purchasePrice * quantity;
       final totalSell = sellPrice * quantity;
-      final profit = totalSell - totalPurchase;
-      final taxAmount = (profit * taxRate) / 100;
-      final finalProfit = profit - taxAmount;
 
-      _showResult(finalProfit);
+      // Calculation logic for each field
+      final brokerCommission = totalSell * 0.005; // 0.5% broker commission
+      final sebonCommission = totalSell * 0.00015; // 0.015% SEBON commission
+      final dpCharge = 25.0; // Flat DP charge
+
+      final totalAmountReceivable =
+          totalSell - brokerCommission - sebonCommission - dpCharge;
+      final profit = totalSell - totalPurchase;
+      final capitalGainTax = (profit * taxRate) / 100;
+
+      setState(() {
+        _totalAmount = 'Rs. ${totalSell.toStringAsFixed(2)}';
+        _brokerCommission = 'Rs. ${brokerCommission.toStringAsFixed(2)}';
+        _sebonCommission = 'Rs. ${sebonCommission.toStringAsFixed(2)}';
+        _dpCharge = 'Rs. $dpCharge';
+        _totalReceivable = 'Rs. ${totalAmountReceivable.toStringAsFixed(2)}';
+        _capitalGainTax = 'Rs. ${capitalGainTax.toStringAsFixed(2)}';
+        _purchaseValue = 'Rs. ${totalPurchase.toStringAsFixed(2)}';
+      });
     }
   }
 
-  // Result dialog
-  void _showResult(double finalProfit) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Calculation Result'),
-          content: Text('Final Profit: \$${finalProfit.toStringAsFixed(2)}'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // Reset fields
   void _reset() {
     _formKey.currentState!.reset();
     setState(() {
@@ -66,10 +67,16 @@ class _SellScreenState extends State<SellScreen> {
       _purchasePriceController.clear();
       _sellPriceController.clear();
       _quantityController.clear();
+      _totalAmount = null;
+      _brokerCommission = null;
+      _sebonCommission = null;
+      _dpCharge = null;
+      _totalReceivable = null;
+      _capitalGainTax = null;
+      _purchaseValue = null;
     });
   }
 
-  // Input validation
   String? _validateInput(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
       return 'Please enter the $fieldName';
@@ -80,7 +87,6 @@ class _SellScreenState extends State<SellScreen> {
     return null;
   }
 
-  // Reusable radio button builder
   Widget _buildRadioGroup({
     required String title,
     required List<String> options,
@@ -110,12 +116,32 @@ class _SellScreenState extends State<SellScreen> {
     );
   }
 
+  Widget _buildDetailRow(String label, String value, {bool isBold = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Sell Screen'),
-      // ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -198,6 +224,33 @@ class _SellScreenState extends State<SellScreen> {
                   ),
                 ],
               ),
+              if (_totalAmount != null) ...[
+                const SizedBox(height: 20.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildDetailRow(
+                      'Total Amount',
+                      _totalAmount!,
+                    ),
+                    const Divider(),
+                    _buildDetailRow('Broker Commission', _brokerCommission!),
+                    const Divider(),
+                    _buildDetailRow('SEBON Commission', _sebonCommission!),
+                    const Divider(),
+                    _buildDetailRow('DP Charge', _dpCharge!),
+                    const Divider(),
+                    _buildDetailRow(
+                        'Total Amount Receivable', _totalReceivable!),
+                    const Divider(),
+                    _buildDetailRow('Capital Gain Tax ($_selectedTaxRate)',
+                        _capitalGainTax!),
+                    const Divider(),
+                    _buildDetailRow('Purchase Value', _purchaseValue!),
+                    const Divider(),
+                  ],
+                ),
+              ],
             ],
           ),
         ),
