@@ -32,8 +32,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        // '/': (context) => GoogleLoginScreen(),
-        // '/': (context) => DashboardScreen(),
         '/': (context) => const CheckScreen(),
         '/dashboard_screen': (context) => DashboardScreen(),
         '/news': (context) => NewsScreen(),
