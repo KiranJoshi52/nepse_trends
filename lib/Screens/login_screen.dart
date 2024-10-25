@@ -3,14 +3,15 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nepse_trends/Screens/dashboard_screen.dart';
 import 'package:nepse_trends/services/auth_services/auth_services.dart'; // Assuming AuthService exists
 
-class CheckScreen extends StatefulWidget {
-  const CheckScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+  static const String loginScreenRoute = '/';
 
   @override
-  _CheckScreenState createState() => _CheckScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _CheckScreenState extends State<CheckScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   bool isLoggedIn = false;
   bool isLoading = true;
 

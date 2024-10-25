@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:nepse_trends/Screens/ai_charts_screen.dart';
-import 'package:nepse_trends/Screens/check_screen.dart';
+import 'package:nepse_trends/Screens/login_screen.dart';
 import 'package:nepse_trends/Screens/dashboard_screen.dart';
 import 'package:nepse_trends/Screens/data_analytics_screen.dart';
 import 'package:nepse_trends/Screens/floorsheet_screen.dart';
@@ -38,16 +38,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // Define routes as constants for better maintainability
-  static const String checkScreenRoute = '/';
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: checkScreenRoute,
+      initialRoute: LoginScreen.loginScreenRoute,
       routes: {
-        checkScreenRoute: (context) => const CheckScreen(),
+        LoginScreen.loginScreenRoute: (context) => const LoginScreen(),
         DashboardScreen.dashboardScreenRoute: (context) =>
             const DashboardScreen(),
         NewsScreen.newsScreenRoute: (context) => NewsScreen(),
