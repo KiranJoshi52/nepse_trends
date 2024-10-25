@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // Navigate to the dashboard
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => DashboardScreen()),
+        MaterialPageRoute(builder: (context) => const DashboardScreen()),
       );
     } else {
       setState(() {
@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (credential != null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => DashboardScreen()),
+          MaterialPageRoute(builder: (context) => const DashboardScreen()),
         );
       } else {
         setState(() {
