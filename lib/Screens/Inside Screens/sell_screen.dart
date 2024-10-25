@@ -93,18 +93,16 @@ class _SellScreenState extends State<SellScreen> {
         Text(title),
         Row(
           children: options.map((option) {
-            return Expanded(
-              child: Row(
-                children: [
-                  Radio<String>(
-                    value: option,
-                    groupValue: groupValue,
-                    onChanged: onChanged,
-                    activeColor: Colors.green,
-                  ),
-                  Text(option),
-                ],
-              ),
+            return Row(
+              children: [
+                Radio<String>(
+                  value: option,
+                  groupValue: groupValue,
+                  onChanged: onChanged,
+                  activeColor: Colors.green,
+                ),
+                Text(option),
+              ],
             );
           }).toList(),
         ),
