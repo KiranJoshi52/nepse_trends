@@ -1,96 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nepse_trends/Screens/dashboard_screen.dart';
-import 'package:nepse_trends/services/auth_services/auth_services.dart'; // Assuming AuthService exists
+import 'package:nepse_trends/provider/google_sign_in_provider.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
   static const String loginScreenRoute = '/';
-
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  bool isLoggedIn = false;
-  bool isLoading = true;
-
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-
-  @override
-  void initState() {
-    super.initState();
-    _checkLoginStatus();
-  }
-
-  // Reduced async operations to minimize delays and overhead
-  Future<GoogleSignInAccount?> _getLoggedInUser() async {
-    try {
-      GoogleSignInAccount? user = _googleSignIn.currentUser ?? await _googleSignIn.signInSilently();
-      return user;
-    } catch (error) {
-      debugPrint('Error in signInSilently: $error');
-      return null;
-    }
-  }
-
-  Future<void> _checkLoginStatus() async {
-    final user = await _getLoggedInUser();
-
-    if (user != null) {
-      setState(() {
-        isLoggedIn = true;
-      });
-
-      // Navigate to the dashboard
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const DashboardScreen()),
-      );
-    } else {
-      setState(() {
-        isLoading = false; // Stop loading if no user is logged in
-      });
-    }
-  }
-
-  Future<void> _handleGoogleSignIn() async {
-    setState(() {
-      isLoading = true; // Start loading when sign-in is initiated
-    });
-
-    try {
-      final credential = await signInWithGoogle();
-
-      if (credential != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardScreen()),
-        );
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-        _showErrorSnackBar('Google sign-in failed. Please try again.');
-      }
-    } catch (error) {
-      debugPrint('Error during sign-in: $error');
-      setState(() {
-        isLoading = false;
-      });
-      _showErrorSnackBar('Sign-in failed. Please try again.');
-    }
-  }
-
-  // Show error snackbar (reusable)
-  void _showErrorSnackBar(String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      backgroundColor: Colors.redAccent,
-      duration: const Duration(seconds: 3),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,28 +28,44 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Sign in to access Nepse Trends',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 50),
-                  isLoading
-                      ? const CircularProgressIndicator(
+          Consumer<GoogleSignInProvider>(
+            builder: (context, provider, child) {
+              if (provider.user != null) {
+                // Navigate to Dashboard if user is logged in
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const DashboardScreen()),
+                  );
+                });
+                return Container(); // Return an empty container while navigating
+              }
+
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Sign in to access Nepse Trends',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 50),
+                      if (provider.isLoading)
+                        const CircularProgressIndicator(
                           color: Colors.white,
                         )
-                      : ElevatedButton.icon(
-                          onPressed: _handleGoogleSignIn,
+                      else
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            await provider.signInWithGoogle();
+                          },
                           icon: const Icon(Icons.login, size: 24),
                           label: const Text(
                             'Sign in with Google',
@@ -143,26 +74,27 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.teal,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                         ),
-                  const SizedBox(height: 20),
-                  if (!isLoading)
-                    const Text(
-                      'Access market trends and insights effortlessly.',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 16,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                ],
-              ),
-            ),
+                      const SizedBox(height: 20),
+                      if (!provider.isLoading)
+                        const Text(
+                          'Access market trends and insights effortlessly.',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),

@@ -15,6 +15,7 @@ import 'package:nepse_trends/Screens/portfolio_screen.dart';
 import 'package:nepse_trends/Screens/share_calculator_screen.dart';
 import 'package:nepse_trends/Screens/share_training_screen.dart';
 import 'package:nepse_trends/Screens/today_price_screen.dart';
+import 'package:nepse_trends/provider/google_sign_in_provider.dart';
 import 'package:nepse_trends/provider/sell_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SellProvider()),
+        ChangeNotifierProvider(create: (_) => GoogleSignInProvider()),
       ],
       child: const MyApp(),
     ),
