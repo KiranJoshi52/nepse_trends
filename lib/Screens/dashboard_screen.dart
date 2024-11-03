@@ -91,7 +91,7 @@ class DashboardScreen extends StatelessWidget {
                         color: Colors.grey,
                         size: 50,
                       )
-                    : null, // Use the user's photo if available
+                    : null,
               ),
             ),
             Expanded(
@@ -122,8 +122,36 @@ class DashboardScreen extends StatelessWidget {
                       style: TextStyle(color: Colors.red),
                     ),
                     onTap: () async {
-                      await googleSignInProvider.signOut();
-                      Navigator.of(context).pushReplacementNamed('/login'); // Adjust this route as necessary
+                      // Show confirmation dialog
+                      final shouldLogout = await showDialog<bool>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Confirm Logout'),
+                            content:
+                                const Text('Are you sure you want to logout?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.of(context)
+                                    .pop(false), // User pressed "No"
+                                child: const Text('No'),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.of(context)
+                                    .pop(true), // User pressed "Yes"
+                                child: const Text('Yes'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                      // Check the user's response
+                      if (shouldLogout == true) {
+                        await googleSignInProvider.signOut();
+                        Navigator.of(context).pushReplacementNamed(
+                            '/login'); // Adjust this route as necessary
+                      }
                     },
                   ),
                 ],
