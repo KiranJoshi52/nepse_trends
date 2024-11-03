@@ -17,7 +17,7 @@ class LoginScreen extends StatelessWidget {
       Future.delayed(Duration.zero, () {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(message),
+            content: Center(child: Text(message)),
             duration: const Duration(seconds: 2),
             behavior: SnackBarBehavior.floating, // Makes the snackbar float
             margin: const EdgeInsets.only(left: 30, right: 30, bottom: 20), // Custom margins
