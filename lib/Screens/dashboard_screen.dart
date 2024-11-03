@@ -24,7 +24,7 @@ class DashboardScreen extends StatelessWidget {
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
-        title: Text(
+        title: const Text(
           'Dashboard',
           style: TextStyle(
             fontSize: 22,
@@ -53,6 +53,7 @@ class DashboardScreen extends StatelessWidget {
               backgroundColor: Colors.white,
               radius: 18,
               child: IconButton(
+                padding: EdgeInsets.zero, // Remove default padding
                 icon: const Icon(
                   Icons.person,
                   color: Colors.grey,
@@ -62,25 +63,26 @@ class DashboardScreen extends StatelessWidget {
                 },
               ),
             ),
+
           ),
         ],
       ),
       drawer: Drawer(
         child: Column(
           children: [
-            UserAccountsDrawerHeader(
+            const UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: primaryColor),
-              accountName: const Text(
+              accountName: Text(
                 'User Name',
                 style: TextStyle(color: Colors.white),
               ),
-              accountEmail: const Text(
+              accountEmail: Text(
                 'user@example.com',
                 style: TextStyle(color: Colors.white70),
               ),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: const Icon(
+                child: Icon(
                   Icons.person,
                   color: Colors.grey,
                   size: 50,
@@ -211,7 +213,7 @@ class DashboardScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       item['label'],
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: primaryColor),
