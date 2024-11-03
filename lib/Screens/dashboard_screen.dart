@@ -82,13 +82,16 @@ class DashboardScreen extends StatelessWidget {
                 user?.email ?? 'user@example.com',
                 style: const TextStyle(color: Colors.white70),
               ),
-              currentAccountPicture: const CircleAvatar(
+              currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.person,
-                  color: Colors.grey,
-                  size: 50,
-                ),
+                backgroundImage: user?.photoURL != null ? NetworkImage(user!.photoURL!) : null,
+                child: user?.photoURL == null
+                    ? const Icon(
+                        Icons.person,
+                        color: Colors.grey,
+                        size: 50,
+                      )
+                    : null, // Use the user's photo if available
               ),
             ),
             Expanded(
@@ -98,31 +101,18 @@ class DashboardScreen extends StatelessWidget {
                   buildDrawerItem(context, Icons.dashboard, 'Dashboard', '/'),
                   const Divider(),
                   buildDrawerItem(context, Icons.article, 'News', '/news'),
-                  buildDrawerItem(
-                      context, Icons.show_chart, 'Market', '/market'),
-                  buildDrawerItem(
-                      context, Icons.table_chart, 'Floorsheet', '/floorsheet'),
-                  buildDrawerItem(context, Icons.price_check, "Today's Price",
-                      '/todays_price'),
-                  buildDrawerItem(
-                      context, Icons.business_center, 'Portfolio',
-                      '/portfolio'),
-                  buildDrawerItem(context, Icons.calculate, 'Share Calculator',
-                      '/share_calculator'),
-                  buildDrawerItem(
-                      context, Icons.mail, 'Newsletter', '/newsletter'),
-                  buildDrawerItem(context, Icons.analytics, 'Data Analytics',
-                      '/data_analytics'),
-                  buildDrawerItem(
-                      context, Icons.new_releases, 'New Shares', '/new_shares'),
-                  buildDrawerItem(
-                      context, Icons.assignment, 'IPO Result', '/ipo_result'),
-                  buildDrawerItem(context, Icons.school, 'Share Training',
-                      '/share_training'),
-                  buildDrawerItem(context, Icons.local_offer, 'Mega Offers',
-                      '/mega_offers'),
-                  buildDrawerItem(
-                      context, Icons.bar_chart, 'AI Charts', '/ai_charts'),
+                  buildDrawerItem(context, Icons.show_chart, 'Market', '/market'),
+                  buildDrawerItem(context, Icons.table_chart, 'Floorsheet', '/floorsheet'),
+                  buildDrawerItem(context, Icons.price_check, "Today's Price", '/todays_price'),
+                  buildDrawerItem(context, Icons.business_center, 'Portfolio', '/portfolio'),
+                  buildDrawerItem(context, Icons.calculate, 'Share Calculator', '/share_calculator'),
+                  buildDrawerItem(context, Icons.mail, 'Newsletter', '/newsletter'),
+                  buildDrawerItem(context, Icons.analytics, 'Data Analytics', '/data_analytics'),
+                  buildDrawerItem(context, Icons.new_releases, 'New Shares', '/new_shares'),
+                  buildDrawerItem(context, Icons.assignment, 'IPO Result', '/ipo_result'),
+                  buildDrawerItem(context, Icons.school, 'Share Training', '/share_training'),
+                  buildDrawerItem(context, Icons.local_offer, 'Mega Offers', '/mega_offers'),
+                  buildDrawerItem(context, Icons.bar_chart, 'AI Charts', '/ai_charts'),
                   const Divider(),
                   // Add logout button in the drawer
                   ListTile(
@@ -155,61 +145,17 @@ class DashboardScreen extends StatelessWidget {
             final List<Map<String, dynamic>> gridItems = [
               {'icon': Icons.article, 'label': 'News', 'route': '/news'},
               {'icon': Icons.show_chart, 'label': 'Market', 'route': '/market'},
-              {
-                'icon': Icons.table_chart,
-                'label': 'Floorsheet',
-                'route': '/floorsheet'
-              },
-              {
-                'icon': Icons.price_check,
-                'label': "Today's Price",
-                'route': '/todays_price'
-              },
-              {
-                'icon': Icons.business_center,
-                'label': 'Portfolio',
-                'route': '/portfolio'
-              },
-              {
-                'icon': Icons.calculate,
-                'label': 'Share Calculator',
-                'route': '/share_calculator'
-              },
-              {
-                'icon': Icons.mail,
-                'label': 'Newsletter',
-                'route': '/newsletter'
-              },
-              {
-                'icon': Icons.analytics,
-                'label': 'Data Analytics',
-                'route': '/data_analytics'
-              },
-              {
-                'icon': Icons.new_releases,
-                'label': 'New Shares',
-                'route': '/new_shares'
-              },
-              {
-                'icon': Icons.assignment,
-                'label': 'IPO Result',
-                'route': '/ipo_result'
-              },
-              {
-                'icon': Icons.school,
-                'label': 'Share Training',
-                'route': '/share_training'
-              },
-              {
-                'icon': Icons.local_offer,
-                'label': 'Mega Offers',
-                'route': '/mega_offers'
-              },
-              {
-                'icon': Icons.bar_chart,
-                'label': 'AI Charts',
-                'route': '/ai_charts'
-              },
+              {'icon': Icons.table_chart, 'label': 'Floorsheet', 'route': '/floorsheet'},
+              {'icon': Icons.price_check, 'label': "Today's Price", 'route': '/todays_price'},
+              {'icon': Icons.business_center, 'label': 'Portfolio', 'route': '/portfolio'},
+              {'icon': Icons.calculate, 'label': 'Share Calculator', 'route': '/share_calculator'},
+              {'icon': Icons.mail, 'label': 'Newsletter', 'route': '/newsletter'},
+              {'icon': Icons.analytics, 'label': 'Data Analytics', 'route': '/data_analytics'},
+              {'icon': Icons.new_releases, 'label': 'New Shares', 'route': '/new_shares'},
+              {'icon': Icons.assignment, 'label': 'IPO Result', 'route': '/ipo_result'},
+              {'icon': Icons.school, 'label': 'Share Training', 'route': '/share_training'},
+              {'icon': Icons.local_offer, 'label': 'Mega Offers', 'route': '/mega_offers'},
+              {'icon': Icons.bar_chart, 'label': 'AI Charts', 'route': '/ai_charts'},
             ];
 
             final item = gridItems[index];
