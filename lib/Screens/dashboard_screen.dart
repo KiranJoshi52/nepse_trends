@@ -51,7 +51,7 @@ class DashboardScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              radius: 18,
+              radius: 16,
               child: IconButton(
                 padding: EdgeInsets.zero, // Remove default padding
                 icon: const Icon(
@@ -103,7 +103,8 @@ class DashboardScreen extends StatelessWidget {
                   buildDrawerItem(context, Icons.price_check, "Today's Price",
                       '/todays_price'),
                   buildDrawerItem(
-                      context, Icons.calculate, 'Portfolio', '/portfolio'),
+                      context, Icons.business_center, 'Portfolio',
+                      '/portfolio'),
                   buildDrawerItem(context, Icons.calculate, 'Share Calculator',
                       '/share_calculator'),
                   buildDrawerItem(
@@ -150,7 +151,7 @@ class DashboardScreen extends StatelessWidget {
                 'route': '/todays_price'
               },
               {
-                'icon': Icons.calculate,
+                'icon': Icons.business_center,
                 'label': 'Portfolio',
                 'route': '/portfolio'
               },
