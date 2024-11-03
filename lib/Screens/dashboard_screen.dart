@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nepse_trends/constants/color.dart';
 import 'package:nepse_trends/widgets/build_drawer_item.dart';
 import 'package:nepse_trends/widgets/build_grid_item.dart';
@@ -10,8 +11,8 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final Color primaryColor = Colors.green.shade700;
-    // final Color accentColor = Colors.blueGrey.shade100;
+    // Get the currently signed-in user
+    final User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       appBar: AppBar(
@@ -63,24 +64,23 @@ class DashboardScreen extends StatelessWidget {
                 },
               ),
             ),
-
           ),
         ],
       ),
       drawer: Drawer(
         child: Column(
           children: [
-            const UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: primaryColor),
+            UserAccountsDrawerHeader(
+              decoration: const BoxDecoration(color: primaryColor),
               accountName: Text(
-                'User Name',
-                style: TextStyle(color: Colors.white),
+                user?.displayName ?? 'User Name',
+                style: const TextStyle(color: Colors.white),
               ),
               accountEmail: Text(
-                'user@example.com',
-                style: TextStyle(color: Colors.white70),
+                user?.email ?? 'user@example.com',
+                style: const TextStyle(color: Colors.white70),
               ),
-              currentAccountPicture: CircleAvatar(
+              currentAccountPicture: const CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Icon(
                   Icons.person,
