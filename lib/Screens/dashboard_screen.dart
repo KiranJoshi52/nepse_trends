@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nepse_trends/provider/google_sign_in_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:nepse_trends/constants/color.dart';
 import 'package:nepse_trends/widgets/build_drawer_item.dart';
 import 'package:nepse_trends/widgets/build_grid_item.dart';
@@ -11,8 +13,8 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get the currently signed-in user
     final User? user = FirebaseAuth.instance.currentUser;
+    final googleSignInProvider = Provider.of<GoogleSignInProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +56,7 @@ class DashboardScreen extends StatelessWidget {
               backgroundColor: Colors.white,
               radius: 16,
               child: IconButton(
-                padding: EdgeInsets.zero, // Remove default padding
+                padding: EdgeInsets.zero,
                 icon: const Icon(
                   Icons.person,
                   color: Colors.grey,
@@ -121,6 +123,19 @@ class DashboardScreen extends StatelessWidget {
                       '/mega_offers'),
                   buildDrawerItem(
                       context, Icons.bar_chart, 'AI Charts', '/ai_charts'),
+                  const Divider(),
+                  // Add logout button in the drawer
+                  ListTile(
+                    leading: const Icon(Icons.logout, color: Colors.red),
+                    title: const Text(
+                      'Logout',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    onTap: () async {
+                      await googleSignInProvider.signOut();
+                      Navigator.of(context).pushReplacementNamed('/login'); // Adjust this route as necessary
+                    },
+                  ),
                 ],
               ),
             ),
