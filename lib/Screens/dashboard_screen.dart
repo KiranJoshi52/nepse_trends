@@ -4,7 +4,6 @@ import 'package:nepse_trends/provider/google_sign_in_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:nepse_trends/constants/color.dart';
 import 'package:nepse_trends/widgets/build_drawer_item.dart';
-import 'package:nepse_trends/widgets/build_grid_item.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const String dashboardScreenRoute = '/dashboard_screen';
@@ -149,8 +148,10 @@ class DashboardScreen extends StatelessWidget {
                       // Check the user's response
                       if (shouldLogout == true) {
                         await googleSignInProvider.signOut();
-                        Navigator.of(context).pushReplacementNamed(
-                            '/login'); // Adjust this route as necessary
+
+                        // Navigate to the login screen with a message
+                        Navigator.of(context).pushReplacementNamed('/login',
+                            arguments: 'Logged out successfully');
                       }
                     },
                   ),
