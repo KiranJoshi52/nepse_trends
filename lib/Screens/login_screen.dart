@@ -12,12 +12,44 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
 
-  // Email and Phone Number Regex
+  // Regex patterns for email, phone, and password validation
   final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
   final RegExp phoneRegex = RegExp(r'^\d{10,}$');
   final RegExp passwordRegex =
       RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$');
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
+
+  String? _validateEmailOrPhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Enter a phone number or email';
+    } else if (!emailRegex.hasMatch(value) && !phoneRegex.hasMatch(value)) {
+      return 'Enter a valid email or phone number';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Enter a password';
+    } else if (!passwordRegex.hasMatch(value)) {
+      return 'Password must be at least 6 characters, include an uppercase letter, a lowercase letter, and a digit';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Handle Google Sign-In
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 10),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
@@ -81,43 +112,32 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.network(
-                            'https://cdn-icons-png.flaticon.com/512/2991/2991148.png',
-                            height: 24,
-                          ),
-                        ],
+                      child: Image.network(
+                        'https://cdn-icons-png.flaticon.com/512/2991/2991148.png',
+                        height: 24,
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 20),
+
+                  // Divider with "Or"
                   const Row(
                     children: [
                       Expanded(
-                        child: Divider(
-                          color: Colors.grey,
-                          thickness: 1,
-                        ),
+                        child: Divider(color: Colors.grey, thickness: 1),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: Text('Or Sign In with'),
                       ),
                       Expanded(
-                        child: Divider(
-                          color: Colors.grey,
-                          thickness: 1,
-                        ),
+                        child: Divider(color: Colors.grey, thickness: 1),
                       ),
                     ],
                   ),
                   const SizedBox(height: 20),
 
-                  // Phone Number/Email Field
+                  // Email/Phone Input Field
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
@@ -127,38 +147,28 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       errorStyle: const TextStyle(color: Colors.redAccent),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter a phone number or email';
-                      } else if (!emailRegex.hasMatch(value) &&
-                          !phoneRegex.hasMatch(value)) {
-                        return 'Enter a valid email or phone number';
-                      }
-                      return null;
-                    },
+                    validator: _validateEmailOrPhone,
                   ),
                   const SizedBox(height: 20),
 
-                  // Password Field
+                  // Password Input Field
                   TextFormField(
                     controller: _passwordController,
-                    obscureText: true,
+                    obscureText: !_isPasswordVisible,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      suffixIcon: const Icon(Icons.visibility_off),
+                      suffixIcon: IconButton(
+                        icon: Icon(_isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        onPressed: _togglePasswordVisibility,
+                      ),
                       errorStyle: const TextStyle(color: Colors.redAccent),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter a password';
-                      } else if (!passwordRegex.hasMatch(value)) {
-                        return 'Password must be at least 6 characters, include an uppercase letter, a lowercase letter, and a digit';
-                      }
-                      return null;
-                    },
+                    validator: _validatePassword,
                   ),
                   const SizedBox(height: 10),
 
@@ -196,8 +206,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
-
                   const SizedBox(height: 20),
+
                   // Sign Up Link
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
