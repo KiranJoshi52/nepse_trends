@@ -1,117 +1,224 @@
 import 'package:flutter/material.dart';
-import 'package:nepse_trends/Screens/dashboard_screen.dart';
-import 'package:nepse_trends/provider/google_sign_in_provider.dart';
-import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   static const String loginScreenRoute = '/login';
 
   @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  // Email and Phone Number Regex
+  final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+  final RegExp phoneRegex = RegExp(r'^\d{10,}$');
+  final RegExp passwordRegex =
+      RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$');
+
+  @override
   Widget build(BuildContext context) {
-    // Retrieve the arguments passed during navigation
-    final String? message = ModalRoute.of(context)?.settings.arguments as String?;
-
-    // Display the SnackBar if the message exists
-    if (message != null) {
-      Future.delayed(Duration.zero, () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Center(child: Text(message)),
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating, // Makes the snackbar float
-            margin: const EdgeInsets.only(left: 30, right: 30, bottom: 20), // Custom margins
-          ),
-        );
-      });
-    }
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome to Nepse Trends'),
-        centerTitle: true,
-        backgroundColor: Colors.teal,
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          // Background gradient
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.teal, Colors.tealAccent],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Logo and App Name
+                  Image.network(
+                    'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+                    height: 100,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Nepse Trends',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.brown[700],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+
+                  // Welcome Text
+                  const Text(
+                    'Welcome!',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Text(
+                    'Sign in to Continue',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(height: 30),
+
+                  // Google Sign-In Button
+                  GestureDetector(
+                    onTap: () {
+                      // Handle Google Sign-In
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.network(
+                            'https://cdn-icons-png.flaticon.com/512/2991/2991148.png',
+                            height: 24,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+                  const Row(
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 1,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Text('Or Sign In with'),
+                      ),
+                      Expanded(
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Phone Number/Email Field
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Phone Number/Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      errorStyle: const TextStyle(color: Colors.redAccent),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter a phone number or email';
+                      } else if (!emailRegex.hasMatch(value) &&
+                          !phoneRegex.hasMatch(value)) {
+                        return 'Enter a valid email or phone number';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Password Field
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      suffixIcon: const Icon(Icons.visibility_off),
+                      errorStyle: const TextStyle(color: Colors.redAccent),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter a password';
+                      } else if (!passwordRegex.hasMatch(value)) {
+                        return 'Password must be at least 6 characters, include an uppercase letter, a lowercase letter, and a digit';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 10),
+
+                  // Forgot Password
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        // Handle Forgot Password
+                      },
+                      child: const Text(
+                        'Forgot Password?',
+                        style: TextStyle(color: Colors.green),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Sign In Button
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // Handle Sign In if form is valid
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Sign In',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+                  // Sign Up Link
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account yet?"),
+                      TextButton(
+                        onPressed: () {
+                          // Handle Sign Up
+                        },
+                        child: const Text(
+                          'Sign up',
+                          style: TextStyle(color: Colors.green),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
-          Consumer<GoogleSignInProvider>(builder: (context, provider, child) {
-            if (provider.user != null) {
-              // Navigate to Dashboard if user is logged in
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const DashboardScreen()),
-                );
-              });
-              return Container(); // Return an empty container while navigating
-            }
-
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Sign in to access Nepse Trends',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 50),
-                    if (provider.isLoading)
-                      const CircularProgressIndicator(
-                        color: Colors.white,
-                      )
-                    else
-                      ElevatedButton.icon(
-                        onPressed: () async {
-                          await provider.signInWithGoogle();
-                        },
-                        icon: const Icon(Icons.login, size: 24),
-                        label: const Text(
-                          'Sign in with Google',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.teal,
-                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    const SizedBox(height: 20),
-                    if (!provider.isLoading)
-                      const Text(
-                        'Access market trends and insights effortlessly.',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-              ),
-            );
-          }),
-        ],
+        ),
       ),
     );
   }
