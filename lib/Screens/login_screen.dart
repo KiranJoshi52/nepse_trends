@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:local_auth/local_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,6 +13,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final LocalAuthentication auth = LocalAuthentication();
   bool _isPasswordVisible = false;
 
   // Regex patterns for email, phone, and password validation
@@ -49,6 +51,44 @@ class _LoginScreenState extends State<LoginScreen> {
       return 'Password must be at least 6 characters, include an uppercase letter, a lowercase letter, and a digit';
     }
     return null;
+  }
+
+  Future<void> _authenticateWithBiometrics() async {
+    try {
+      bool canAuthenticate =
+          await auth.canCheckBiometrics || await auth.isDeviceSupported();
+
+      if (!canAuthenticate) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Biometric authentication not available")),
+        );
+        return;
+      }
+
+      bool isAuthenticated = await auth.authenticate(
+        localizedReason: 'Use fingerprint to sign in',
+        options: const AuthenticationOptions(
+          biometricOnly: true,
+          stickyAuth: true,
+        ),
+      );
+
+      if (isAuthenticated) {
+        // Handle successful authentication
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Authenticated successfully")),
+        );
+        // Perform login or navigate to the next screen
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Authentication failed")),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: $e")),
+      );
+    }
   }
 
   @override
@@ -204,6 +244,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text(
                       'Sign In',
                       style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Fingerprint Login Button
+                  ElevatedButton.icon(
+                    onPressed: _authenticateWithBiometrics,
+                    icon: const Icon(Icons.fingerprint),
+                    label: const Text("Login with Fingerprint"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),

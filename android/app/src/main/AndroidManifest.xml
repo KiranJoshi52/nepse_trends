@@ -4,6 +4,10 @@
         android:name="${applicationName}"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher">
+
+        <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+        <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
