@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class MarketScreen extends StatelessWidget {
   static const String marketScreenRoute = '/market';
@@ -7,9 +8,44 @@ class MarketScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Market')),
-      // body: Center(child: Text('Market Screen')),
-      body: StockDataTable(),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 4, // Adjust the space for the chart (2 parts of 3)
+            child: NepseChartPage(),
+          ),
+          Divider(thickness: 1),
+          Expanded(
+            flex: 1, // Adjust the space for the stock data table (3 parts of 3)
+            child: StockDataTable(),
+          ),
+        ],
+      ),
     );
+  }
+}
+
+class NepseChartPage extends StatefulWidget {
+  const NepseChartPage({Key? key}) : super(key: key);
+
+  @override
+  _NepseChartPageState createState() => _NepseChartPageState();
+}
+
+class _NepseChartPageState extends State<NepseChartPage> {
+  late final WebViewController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse("https://nepsealpha.com/trading/chart"));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WebViewWidget(controller: _controller);
   }
 }
 
@@ -55,41 +91,6 @@ class _StockDataTableState extends State<StockDataTable> {
       'change': -0.53,
       'quantity': 3200
     },
-    {
-      'symbol': 'TSLA',
-      'ltp': 745.50,
-      'pClose': 750.25,
-      'change': -0.63,
-      'quantity': 5000
-    },
-    {
-      'symbol': 'NFLX',
-      'ltp': 525.10,
-      'pClose': 530.00,
-      'change': -0.92,
-      'quantity': 1500
-    },
-    {
-      'symbol': 'NVDA',
-      'ltp': 820.75,
-      'pClose': 810.00,
-      'change': 1.33,
-      'quantity': 2800
-    },
-    {
-      'symbol': 'PYPL',
-      'ltp': 185.20,
-      'pClose': 180.45,
-      'change': 2.63,
-      'quantity': 1100
-    },
-    {
-      'symbol': 'ADBE',
-      'ltp': 560.40,
-      'pClose': 565.10,
-      'change': -0.83,
-      'quantity': 2400
-    },
   ];
 
   bool _isAscending = true;
@@ -127,91 +128,68 @@ class _StockDataTableState extends State<StockDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          double fontSize = constraints.maxWidth < 500 ? 12 : 14;
-          return SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          // Wrap the DataTable with SingleChildScrollView for horizontal scrolling
+          SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: DataTable(
-              columnSpacing: 4,
+              columnSpacing: 12,
               sortColumnIndex: _sortColumnIndex,
               sortAscending: _isAscending,
               columns: [
                 DataColumn(
-                  label: SizedBox(
-                    width: 50,
-                    child: Text('Symbol', style: TextStyle(fontSize: fontSize)),
-                  ),
+                  label: Text('Symbol'),
                   onSort: (columnIndex, _) {
                     _sortData(columnIndex, !_isAscending);
                   },
                 ),
                 DataColumn(
-                  label: SizedBox(
-                    width: 50,
-                    child: Text('LTP', style: TextStyle(fontSize: fontSize)),
-                  ),
+                  label: Text('LTP'),
                   onSort: (columnIndex, _) {
                     _sortData(columnIndex, !_isAscending);
                   },
                 ),
                 DataColumn(
-                  label: SizedBox(
-                    width: 50,
-                    child:
-                        Text('P Close', style: TextStyle(fontSize: fontSize)),
-                  ),
+                  label: Text('P Close'),
                   onSort: (columnIndex, _) {
                     _sortData(columnIndex, !_isAscending);
                   },
                 ),
                 DataColumn(
-                  label: SizedBox(
-                    width: 50,
-                    child:
-                        Text('% Change', style: TextStyle(fontSize: fontSize)),
-                  ),
+                  label: Text('% Change'),
                   onSort: (columnIndex, _) {
                     _sortData(columnIndex, !_isAscending);
                   },
                 ),
                 DataColumn(
-                  label: SizedBox(
-                    width: 50,
-                    child:
-                        Text('Quantity', style: TextStyle(fontSize: fontSize)),
-                  ),
+                  label: Text('Quantity'),
                   onSort: (columnIndex, _) {
                     _sortData(columnIndex, !_isAscending);
                   },
                 ),
               ],
               rows: stockData.map((data) {
-                // Check if change is negative or positive
                 bool isNegativeChange = data['change'] < 0;
                 return DataRow(
-                  color: isNegativeChange
-                      ? WidgetStateProperty.all(Colors.red.shade200)
-                      : WidgetStateProperty.all(
-                          Colors.green.shade200), // Green for positive changes
                   cells: [
-                    DataCell(Text(data['symbol'],
-                        style: TextStyle(fontSize: fontSize))),
-                    DataCell(Text(data['ltp'].toStringAsFixed(2),
-                        style: TextStyle(fontSize: fontSize))),
-                    DataCell(Text(data['pClose'].toStringAsFixed(2),
-                        style: TextStyle(fontSize: fontSize))),
-                    DataCell(Text('${data['change']}%',
-                        style: TextStyle(fontSize: fontSize))),
-                    DataCell(Text(data['quantity'].toString(),
-                        style: TextStyle(fontSize: fontSize))),
+                    DataCell(Text(data['symbol'])),
+                    DataCell(Text(data['ltp'].toStringAsFixed(2))),
+                    DataCell(Text(data['pClose'].toStringAsFixed(2))),
+                    DataCell(Text('${data['change']}%')),
+                    DataCell(Text(data['quantity'].toString())),
                   ],
+                  color: MaterialStateProperty.resolveWith(
+                    (states) => isNegativeChange
+                        ? Colors.red.shade100
+                        : Colors.green.shade100,
+                  ),
                 );
               }).toList(),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
