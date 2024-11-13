@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:nepse_trends/constants/color.dart';
 
 class MarketScreen extends StatelessWidget {
   static const String marketScreenRoute = '/market';
 
+  const MarketScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Market')),
+      appBar: AppBar(
+        title: const Text(
+          'Market',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: primaryColor,
+        iconTheme: const IconThemeData(
+          color: Colors.white, // Change this to your desired color
+        ),
+      ),
       // body: Center(child: Text('Market Screen')),
       body: StockDataTable(),
     );
@@ -14,6 +30,8 @@ class MarketScreen extends StatelessWidget {
 }
 
 class StockDataTable extends StatefulWidget {
+  const StockDataTable({super.key});
+
   @override
   _StockDataTableState createState() => _StockDataTableState();
 }
@@ -169,7 +187,7 @@ class _StockDataTableState extends State<StockDataTable> {
           return SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: DataTable(
-              columnSpacing: 4,
+              columnSpacing: 9,
               sortColumnIndex: _sortColumnIndex,
               sortAscending: _isAscending,
               columns: [
