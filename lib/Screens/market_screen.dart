@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nepse_trends/constants/color.dart';
+import 'package:nepse_trends/widgets/nepse_chart_widget.dart';
 
 class MarketScreen extends StatelessWidget {
   static const String marketScreenRoute = '/market';
@@ -24,7 +25,17 @@ class MarketScreen extends StatelessWidget {
         ),
       ),
       // body: Center(child: Text('Market Screen')),
-      body: StockDataTable(),
+      body: const Column(
+        children: [
+          SizedBox(
+            height: 450, // Set a height for the chart
+            child: NepseChartWidget(),
+          ),
+          Expanded(
+            child: StockDataTable(),
+          ),
+        ],
+      ),
     );
   }
 }
