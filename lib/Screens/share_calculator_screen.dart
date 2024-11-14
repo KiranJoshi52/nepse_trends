@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:nepse_trends/Screens/Inside%20Screens/bonus_share_adjustment.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/buy_screen.dart';
+import 'package:nepse_trends/Screens/Inside%20Screens/right_share_adjustment.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/sell_screen.dart';
 import 'package:nepse_trends/constants/color.dart';
 
@@ -62,8 +64,8 @@ class ShareCalculatorScreen extends StatelessWidget {
                       children: [
                         BuyScreen(), // Sell Screen for smaller screens
                         SellScreen(), // Sell Screen for smaller screens
-                        SellScreen(), // Sell Screen for smaller screens
-                        SellScreen(), // Sell Screen for smaller screens
+                        RightShareAdjustment(), // Sell Screen for smaller screens
+                        BonusShareAdjustment(), // Sell Screen for smaller screens
                       ],
                     ),
                   ),
