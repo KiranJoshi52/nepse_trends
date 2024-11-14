@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/buy_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/sell_screen.dart';
+import 'package:nepse_trends/constants/color.dart';
 
 class ShareCalculatorScreen extends StatelessWidget {
   const ShareCalculatorScreen({super.key});
@@ -11,7 +13,7 @@ class ShareCalculatorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: primaryColor,
         title: const Text(
           'Share Calculator',
           style: TextStyle(
@@ -22,7 +24,7 @@ class ShareCalculatorScreen extends StatelessWidget {
           color: Colors.white, // Change this to your desired color
         ),
       ),
-      backgroundColor: Colors.green, 
+      // backgroundColor: Colors.green,
       body: LayoutBuilder(
         builder: (context, constraints) {
           // Check if the screen is wide (like in landscape or tablet mode)
@@ -36,23 +38,26 @@ class ShareCalculatorScreen extends StatelessWidget {
             );
           } else {
             // For smaller screens, use tabs
-            return const DefaultTabController(
+            return DefaultTabController(
               length: 4,
               child: Column(
                 children: [
-                  TabBar(
-                    // isScrollable: true,
-                    tabs: [
-                      Tab(text: 'Buy'),
-                      Tab(text: 'Sell'),
-                      Tab(text: 'Right Share Adjustment'),
-                      Tab(text: 'Bonus Share Adjustment'),
-                    ],
-                    labelColor: Colors.orange,
-                    unselectedLabelColor: Colors.white,
-                    indicatorColor: Colors.orange,
+                  Container(
+                    color: primaryColor,
+                    child: const TabBar(
+                      // isScrollable: true,
+                      tabs: [
+                        Tab(text: 'Buy'),
+                        Tab(text: 'Sell'),
+                        Tab(text: 'Right Share Adjustment'),
+                        Tab(text: 'Bonus Share Adjustment'),
+                      ],
+                      labelColor: Colors.orange,
+                      unselectedLabelColor: Colors.white,
+                      indicatorColor: Colors.orange,
+                    ),
                   ),
-                  Expanded(
+                  const Expanded(
                     child: TabBarView(
                       children: [
                         BuyScreen(), // Sell Screen for smaller screens
