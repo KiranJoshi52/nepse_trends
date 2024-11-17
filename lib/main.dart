@@ -39,8 +39,6 @@ void main() async {
   String? token = await messaging.getToken();
   print("Firebase Messaging Token: $token");
 
-  //check
-
   // Handle foreground notifications
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print("Message received: ${message.notification?.title}");
@@ -92,6 +90,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-//1
