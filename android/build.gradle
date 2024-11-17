@@ -2,12 +2,10 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal() // Optional, for additional Gradle plugins
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.2' // Use the latest gradle version
         classpath 'com.google.gms:google-services:4.3.15' // Add this line for Google services plugin
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9' // Optional for Crashlytics
     }
 }
 
