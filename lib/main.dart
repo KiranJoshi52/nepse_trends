@@ -70,8 +70,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-//check
-//check - 3
-//backup-2
