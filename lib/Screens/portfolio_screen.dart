@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nepse_trends/constants/color.dart';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 
 class PortfolioScreen extends StatelessWidget {
   static const String portfolioScreenRoute = '/portfolio';
@@ -31,10 +33,24 @@ class _StepperExampleState extends State<StepperExample> {
       setState(() {
         _currentStep++;
       });
-    } else {
-      // Final action
+    }
+  }
+
+  // Function to handle file upload
+  Future<void> _onFileUpload() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['csv'], // Restrict file types to CSV
+    );
+
+    if (result != null) {
+      final file = File(result.files.single.path!);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("All steps completed!")),
+        SnackBar(content: Text('File selected: ${file.path}')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No file selected')),
       );
     }
   }
@@ -42,8 +58,7 @@ class _StepperExampleState extends State<StepperExample> {
   @override
   Widget build(BuildContext context) {
     return Stepper(
-      type: StepperType
-          .vertical, // Use StepperType.horizontal for horizontal layout
+      type: StepperType.vertical, // Use StepperType.horizontal for horizontal layout
       currentStep: _currentStep,
       onStepContinue: _onStepContinue,
       onStepCancel: null, // Cancel button not needed
@@ -53,26 +68,47 @@ class _StepperExampleState extends State<StepperExample> {
         });
       },
       controlsBuilder: (BuildContext context, ControlsDetails details) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 16.0),
-          child: SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: details.onStepContinue,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor, // Green color for the button
-                padding: const EdgeInsets.symmetric(
-                    vertical: 13.0), // Makes the button taller
-              ),
-              child: const Text(
-                'Next',
-                style: TextStyle(
-                  color: Colors.white, // Set the text color to green
+        if (_currentStep == 5) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _onFileUpload,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  padding: const EdgeInsets.symmetric(vertical: 13.0),
+                ),
+                child: const Text(
+                  'Upload CSV File',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
-        );
+          );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: details.onStepContinue,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  padding: const EdgeInsets.symmetric(vertical: 13.0),
+                ),
+                child: const Text(
+                  'Next',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
       },
       steps: [
         Step(
@@ -99,7 +135,7 @@ class _StepperExampleState extends State<StepperExample> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           content: const Text(
-              "After loggin in, you will be redirected to the Meroshare dashboard. On the left-hand side of the page, you will see a sidebar with various options. Click on the \"My Transaction History\" tab to view your transaction history."),
+              "After logging in, you will be redirected to the Meroshare dashboard. On the left-hand side of the page, you will see a sidebar with various options. Click on the \"My Transaction History\" tab to view your transaction history."),
           isActive: _currentStep >= 2,
         ),
         Step(
@@ -113,7 +149,7 @@ class _StepperExampleState extends State<StepperExample> {
         ),
         Step(
           title: const Text(
-            'Click the "Date" radio button to get a list of transaction histories by date.',
+            'Download CSV file of transaction history.',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           content: const Text(
