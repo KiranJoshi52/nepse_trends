@@ -26,6 +26,7 @@ class StepperExample extends StatefulWidget {
 
 class _StepperExampleState extends State<StepperExample> {
   int _currentStep = 0;
+  String? _selectedFileName;
 
   // Function to move to the next step
   void _onStepContinue() {
@@ -45,12 +46,17 @@ class _StepperExampleState extends State<StepperExample> {
 
     if (result != null) {
       final file = File(result.files.single.path!);
+      setState(() {
+        _selectedFileName = result.files.single.name; // Update the file name
+      });
+    }
+  }
+
+  // Function for importing the selected file
+  void _onImport() {
+    if (_selectedFileName != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('File selected: ${file.path}')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No file selected')),
+        SnackBar(content: Text('Importing $_selectedFileName')),
       );
     }
   }
@@ -71,21 +77,41 @@ class _StepperExampleState extends State<StepperExample> {
         if (_currentStep == 5) {
           return Padding(
             padding: const EdgeInsets.only(top: 16.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _onFileUpload,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  padding: const EdgeInsets.symmetric(vertical: 13.0),
-                ),
-                child: const Text(
-                  'Upload CSV File',
-                  style: TextStyle(
-                    color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                OutlinedButton.icon(
+                  onPressed: _onFileUpload,
+                  icon: const Icon(Icons.upload_file, color: primaryColor),
+                  label: Text(
+                    _selectedFileName ?? 'Choose File',
+                    style: const TextStyle(
+                      color: primaryColor,
+                    ),
+                    overflow: TextOverflow.ellipsis, // Handle long file names
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: primaryColor),
                   ),
                 ),
-              ),
+                if (_selectedFileName != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: ElevatedButton(
+                      onPressed: _onImport,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        padding: const EdgeInsets.symmetric(vertical: 13.0),
+                      ),
+                      child: const Text(
+                        'Import',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           );
         } else {
