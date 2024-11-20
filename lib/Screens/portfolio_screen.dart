@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nepse_trends/constants/color.dart';
 
 class PortfolioScreen extends StatefulWidget {
   static const String portfolioScreenRoute = '/portfolio';
@@ -26,7 +27,16 @@ class _PortfolioScreenState extends State<PortfolioScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Portfolio')),
+      appBar: AppBar(
+        title: const Text(
+          'Portfolio',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: primaryColor,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Column(
         children: [
           // Making the TabBar scrollable horizontally
