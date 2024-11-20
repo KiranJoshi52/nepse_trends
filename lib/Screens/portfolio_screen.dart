@@ -129,13 +129,14 @@ class _PortfolioScreenState extends State<PortfolioScreen>
                                 color: Colors.green[900],
                               ),
                             ),
-                            SizedBox(height: 10),
-                            HoldingCard("CLI", 10, 678.0, 6780.0, -30.0),
-                            HoldingCard("GBIME", 120, 255.0, 30600.0, -120.0),
-                            HoldingCard("GCIL", 11, 487.0, 5357.0, 22.0,
+                            const SizedBox(height: 10),
+                            const HoldingCard("CLI", 10, 678.0, 6780.0, -30.0),
+                            const HoldingCard(
+                                "GBIME", 120, 255.0, 30600.0, -120.0),
+                            const HoldingCard("GCIL", 11, 487.0, 5357.0, 22.0,
                                 isPositive: true),
-                            HoldingCard("H8020", 100, 10.0, 1000.0, -5.0),
-                            HoldingCard("HRL", 20, 865.0, 17300.0, -20.0),
+                            const HoldingCard("H8020", 100, 10.0, 1000.0, -5.0),
+                            const HoldingCard("HRL", 20, 865.0, 17300.0, -20.0),
                           ],
                         ),
                       ),
@@ -192,7 +193,7 @@ class HoldingCard extends StatelessWidget {
   final bool isPositive;
 
   const HoldingCard(this.symbol, this.units, this.ltp, this.value, this.change,
-      {this.isPositive = false});
+      {super.key, this.isPositive = false});
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +209,8 @@ class HoldingCard extends StatelessWidget {
               children: [
                 Text(
                   symbol,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text("Units: $units, LTP: Rs. $ltp"),
               ],
@@ -218,7 +220,7 @@ class HoldingCard extends StatelessWidget {
               children: [
                 Text(
                   "Rs. ${value.toStringAsFixed(2)}",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
