@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nepse_trends/Screens/Inside%20Screens/add_shares_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/allocation_screen.dart';
 import 'package:nepse_trends/constants/color.dart';
 
@@ -146,7 +147,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
                 ),
                 // const Center(child: Text('Allocation Screen')),
                 const AllocationScreen(),
-                const Center(child: Text('Add Shares Screen')),
+                AddSharesScreen(),
                 const Center(child: Text('History Screen')),
                 const Center(child: Text('Profit & Loss Screen')),
                 const Center(child: Text('Import Screen')),
