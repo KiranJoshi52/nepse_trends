@@ -17,6 +17,13 @@ class AllocationScreen extends StatelessWidget {
     ]
     ''';
 
+    const jsonData2 = '''
+    [
+      {"label": "Investment", "value": 40, "color": "0xff336699"},
+      {"label": "Market Value", "value": 30, "color": "0xff800080"}
+    ]
+    ''';
+
     return const Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -24,10 +31,16 @@ class AllocationScreen extends StatelessWidget {
           child: Column(
             children: [
               // First Card
-              AllocationCard(jsonData: jsonData),
-              SizedBox(height: 24), // Space between cards
+              AllocationCard(
+                title: 'Distribution Chart',
+                jsonData: jsonData,
+              ),
+              SizedBox(height: 4), // Space between cards
               // Second Card
-              AllocationCard(jsonData: jsonData),
+              AllocationCard(
+                title: 'Portfolio Status',
+                jsonData: jsonData2,
+              ),
             ],
           ),
         ),
@@ -37,9 +50,11 @@ class AllocationScreen extends StatelessWidget {
 }
 
 class AllocationCard extends StatelessWidget {
+  final String title;
   final String jsonData;
 
-  const AllocationCard({super.key, required this.jsonData});
+  const AllocationCard(
+      {super.key, required this.title, required this.jsonData});
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +77,11 @@ class AllocationCard extends StatelessWidget {
                 topRight: Radius.circular(16),
               ),
             ),
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: const Center(
+            padding: const EdgeInsets.symmetric(vertical: 9.0),
+            child: Center(
               child: Text(
-                'Distribution Chart',
-                style: TextStyle(
+                title, // Dynamic title
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
