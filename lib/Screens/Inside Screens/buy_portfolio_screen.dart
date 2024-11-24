@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nepali_date_picker/nepali_date_picker.dart'; // Add this package in pubspec.yaml
+import 'package:nepali_date_picker/nepali_date_picker.dart';
+import 'package:nepse_trends/constants/color.dart'; // Add this package in pubspec.yaml
 
 class BuyPortfolioScreen extends StatefulWidget {
   const BuyPortfolioScreen({super.key});
@@ -30,182 +31,26 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              const Text(
-                'Shareholder',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _shareholderController,
-                decoration: const InputDecoration(
-                  hintText: 'Shareholder name',
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                ),
-                style: const TextStyle(fontSize: 14),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the shareholder name';
-                  }
-                  return null;
-                },
-              ),
+              _buildTextFormField(
+                  'Shareholder', 'Shareholder name', _shareholderController),
               const SizedBox(height: 16),
-              const Text(
-                'Purchase Date (AD)',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              GestureDetector(
-                onTap: _pickDate,
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    controller: _dateController,
-                    decoration: InputDecoration(
-                      hintText: 'YYYY-MM-DD (AD)',
-                      prefixIcon: const Icon(Icons.calendar_today, size: 20),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 10),
-                      isDense: true,
-                      border: const OutlineInputBorder(),
-                    ),
-                    style: const TextStyle(fontSize: 14),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select a date';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ),
+              _buildDatePicker('Purchase Date (AD)', 'YYYY-MM-DD (AD)',
+                  _dateController, _pickDate),
               const SizedBox(height: 16),
-              const Text(
-                'Purchase Date (BS)',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              GestureDetector(
-                onTap: _pickNepaliDate,
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    controller: _nepaliDateController,
-                    decoration: InputDecoration(
-                      hintText: 'YYYY-MM-DD (BS)',
-                      prefixIcon: const Icon(Icons.calendar_today, size: 20),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 10),
-                      isDense: true,
-                      border: const OutlineInputBorder(),
-                    ),
-                    style: const TextStyle(fontSize: 14),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select a Nepali date';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ),
+              _buildDatePicker('Purchase Date (BS)', 'YYYY-MM-DD (BS)',
+                  _nepaliDateController, _pickNepaliDate),
               const SizedBox(height: 16),
-              const Text(
-                'Company',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              DropdownButtonFormField<String>(
-                value: _selectedCompany,
-                items: _companies.map((String company) {
-                  return DropdownMenuItem<String>(
-                    value: company,
-                    child: Text(company),
-                  );
-                }).toList(),
-                decoration: const InputDecoration(
-                  hintText: 'Search for company',
-                  prefixIcon: Icon(Icons.search, size: 20),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                ),
-                style: const TextStyle(fontSize: 14),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedCompany = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select a company';
-                  }
-                  return null;
-                },
-              ),
+              _buildCompanyDropdown(),
               const SizedBox(height: 16),
-              const Text(
-                'Quantity',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _quantityController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  hintText: 'Enter quantity',
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                ),
-                style: const TextStyle(fontSize: 14),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the quantity';
-                  }
-                  return null;
-                },
-              ),
+              _buildTextFormField(
+                  'Quantity', 'Enter quantity', _quantityController,
+                  keyboardType: TextInputType.number),
               const SizedBox(height: 16),
-              const Text(
-                'Purchase Price',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _priceController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  hintText: 'Enter purchase price',
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                ),
-                style: const TextStyle(fontSize: 14),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the purchase price';
-                  }
-                  return null;
-                },
-              ),
+              _buildTextFormField(
+                  'Purchase Price', 'Enter purchase price', _priceController,
+                  keyboardType: TextInputType.number),
               const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                  onPressed: _submitForm,
-                  child: const Text(
-                    'Add Share',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
+              _buildSubmitButton(),
             ],
           ),
         ),
@@ -213,6 +58,142 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
     );
   }
 
+  // Helper widget to build the TextFormFields
+  Widget _buildTextFormField(
+      String label, String hintText, TextEditingController controller,
+      {TextInputType keyboardType = TextInputType.text}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: controller,
+          keyboardType: keyboardType,
+          decoration: InputDecoration(
+            hintText: hintText,
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            isDense: true,
+            border: const OutlineInputBorder(),
+          ),
+          style: const TextStyle(fontSize: 14),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter $label';
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  // Helper widget to build the Date Picker
+  Widget _buildDatePicker(String label, String hintText,
+      TextEditingController controller, Function() onTap) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        GestureDetector(
+          onTap: onTap,
+          child: AbsorbPointer(
+            child: TextFormField(
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: hintText,
+                prefixIcon: const Icon(Icons.calendar_today, size: 20),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                isDense: true,
+                border: const OutlineInputBorder(),
+              ),
+              style: const TextStyle(fontSize: 14),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select a date';
+                }
+                return null;
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Helper widget for Company Dropdown
+  Widget _buildCompanyDropdown() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Company',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          value: _selectedCompany,
+          items: _companies.map((String company) {
+            return DropdownMenuItem<String>(
+              value: company,
+              child: Text(
+                company,
+                style: const TextStyle(color: Colors.black),
+              ),
+            );
+          }).toList(),
+          decoration: const InputDecoration(
+            hintText: 'Search for company',
+            prefixIcon: Icon(Icons.search, size: 20),
+            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            isDense: true,
+            border: OutlineInputBorder(),
+          ),
+          style: const TextStyle(fontSize: 14, color: Colors.black),
+          onChanged: (value) {
+            setState(() {
+              _selectedCompany = value;
+            });
+          },
+          validator: (value) {
+            if (value == null) {
+              return 'Please select a company';
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  // Submit button widget
+  Widget _buildSubmitButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
+        onPressed: _submitForm,
+        child: const Text(
+          'Add Share',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Date picker for AD
   Future<void> _pickDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -229,6 +210,7 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
     }
   }
 
+  // Nepali Date picker
   Future<void> _pickNepaliDate() async {
     final NepaliDateTime? picked = await showMaterialDatePicker(
       context: context,
@@ -245,6 +227,7 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
     }
   }
 
+  // Form submission
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
