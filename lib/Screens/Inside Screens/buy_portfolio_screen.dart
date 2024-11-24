@@ -19,6 +19,9 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
   String? _selectedCompany;
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _dpChargeController = TextEditingController();
+  final TextEditingController _costPerShareController = TextEditingController();
+  final TextEditingController _totalAmountController = TextEditingController();
 
   final List<String> _companies = ['Company A', 'Company B', 'Company C'];
 
@@ -49,8 +52,21 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
               _buildTextFormField(
                   'Purchase Price', 'Enter purchase price', _priceController,
                   keyboardType: TextInputType.number),
+              const SizedBox(height: 16),
+              _buildTextFormField(
+                  'DP Charge', 'Enter DP Charge', _dpChargeController,
+                  keyboardType: TextInputType.number),
+              const SizedBox(height: 16),
+              _buildTextFormField(
+                  'Cost Per Share', 'Cost Per Share', _costPerShareController,
+                  keyboardType: TextInputType.number),
+              const SizedBox(height: 16),
+              _buildTextFormField(
+                  'Total Amount', 'Enter Total Amount', _totalAmountController,
+                  keyboardType: TextInputType.number),
               const SizedBox(height: 24),
               _buildSubmitButton(),
+              const SizedBox(height: 90),
             ],
           ),
         ),
@@ -202,6 +218,7 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
       lastDate: DateTime(2100),
     );
     if (picked != null) {
+      // Grouped setState for both fields
       setState(() {
         _dateController.text = picked.toString().split(' ')[0];
         _nepaliDateController.text = NepaliDateFormat("yyyy-MM-dd")
@@ -219,6 +236,7 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
       lastDate: NepaliDateTime(2090, 12, 30),
     );
     if (picked != null) {
+      // Grouped setState for both fields
       setState(() {
         _nepaliDateController.text =
             NepaliDateFormat("yyyy-MM-dd").format(picked);
