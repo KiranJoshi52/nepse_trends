@@ -9,6 +9,7 @@ class BuyPortfolioScreen extends StatefulWidget {
 
 class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _shareholderController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   String? _selectedCompany;
   final TextEditingController _quantityController = TextEditingController();
@@ -26,7 +27,32 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
           child: ListView(
             children: [
               const Text(
-                'Purchase Date',
+                'Shareholder',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _shareholderController,
+                decoration: const InputDecoration(
+                  hintText: 'Shareholder name',
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 10, // Adjusted for smaller height
+                    horizontal: 10,
+                  ),
+                  isDense: true, // Reduces overall height
+                  border: OutlineInputBorder(),
+                ),
+                style: const TextStyle(fontSize: 14), // Smaller font size
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the shareholder name';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Purchase Date (AD)',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -73,7 +99,7 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
                   hintText: 'Search for company',
                   prefixIcon: Icon(Icons.search, size: 20),
                   contentPadding: EdgeInsets.symmetric(
-                    vertical: 8, // Adjusted for smaller height
+                    vertical: 10, // Adjusted for smaller height
                     horizontal: 10,
                   ),
                   isDense: true, // Reduces overall height
@@ -104,7 +130,7 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
                 decoration: const InputDecoration(
                   hintText: 'Enter quantity',
                   contentPadding: EdgeInsets.symmetric(
-                    vertical: 8, // Adjusted for smaller height
+                    vertical: 10, // Adjusted for smaller height
                     horizontal: 10,
                   ),
                   isDense: true, // Reduces overall height
@@ -128,9 +154,9 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
                 controller: _priceController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  hintText: 'Enter Purchase price',
+                  hintText: 'Enter purchase price',
                   contentPadding: EdgeInsets.symmetric(
-                    vertical: 8, // Adjusted for smaller height
+                    vertical: 10, // Adjusted for smaller height
                     horizontal: 10,
                   ),
                   isDense: true, // Reduces overall height
