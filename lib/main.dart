@@ -43,6 +43,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+          // fontFamily: 'Times New Roman',
+          // fontFamily: 'Courier',
+          // fontFamily: 'Georgia',
+          ),
       debugShowCheckedModeBanner: false,
       initialRoute: LoginScreen.loginScreenRoute,
       routes: {
