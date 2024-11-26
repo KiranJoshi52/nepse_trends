@@ -1,29 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:nepali_date_picker/nepali_date_picker.dart';
-import 'package:nepse_trends/constants/color.dart'; // Add this package in pubspec.yaml
+import 'package:nepse_trends/constants/color.dart'; // Ensure this is added in pubspec.yaml
 
-class BuyPortfolioScreen extends StatefulWidget {
-  const BuyPortfolioScreen({super.key});
+class RightsPortfolioScreen extends StatefulWidget {
+  const RightsPortfolioScreen({super.key});
 
   @override
-  _BuyPortfolioScreenState createState() => _BuyPortfolioScreenState();
+  _RightsPortfolioScreenState createState() => _RightsPortfolioScreenState();
 }
 
-class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
+class _RightsPortfolioScreenState extends State<RightsPortfolioScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _shareholderController = TextEditingController();
   final TextEditingController _dateController =
       TextEditingController(); // For AD date
-  final TextEditingController _nepaliDateController =
-      TextEditingController(); // For BS date
   String? _selectedCompany;
   final TextEditingController _quantityController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _dpChargeController = TextEditingController();
-  final TextEditingController _costPerShareController = TextEditingController();
+  final TextEditingController _rateController = TextEditingController();
   final TextEditingController _totalAmountController = TextEditingController();
 
   final List<String> _companies = ['Company A', 'Company B', 'Company C'];
+
+  // Focus nodes for each field
+  final FocusNode _shareholderFocusNode = FocusNode();
+  final FocusNode _quantityFocusNode = FocusNode();
+  final FocusNode _rateFocusNode = FocusNode();
+  final FocusNode _totalAmountFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _setupFocusListeners();
+  }
+
+  @override
+  void dispose() {
+    _shareholderController.dispose();
+    _dateController.dispose();
+    _quantityController.dispose();
+    _rateController.dispose();
+    _totalAmountController.dispose();
+    _shareholderFocusNode.dispose();
+    _quantityFocusNode.dispose();
+    _rateFocusNode.dispose();
+    _totalAmountFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _setupFocusListeners() {
+    _shareholderFocusNode.addListener(() {
+      if (!_shareholderFocusNode.hasFocus) _formKey.currentState!.validate();
+    });
+    _quantityFocusNode.addListener(() {
+      if (!_quantityFocusNode.hasFocus) _formKey.currentState!.validate();
+    });
+    _rateFocusNode.addListener(() {
+      if (!_rateFocusNode.hasFocus) _formKey.currentState!.validate();
+    });
+    _totalAmountFocusNode.addListener(() {
+      if (!_totalAmountFocusNode.hasFocus) _formKey.currentState!.validate();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,35 +70,27 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              _buildTextFormField(
-                  'Shareholder', 'Shareholder name', _shareholderController),
-              const SizedBox(height: 16),
-              _buildDatePicker('Purchase Date (AD)', 'YYYY-MM-DD (AD)',
-                  _dateController, _pickDate),
-              const SizedBox(height: 16),
-              _buildDatePicker('Purchase Date (BS)', 'YYYY-MM-DD (BS)',
-                  _nepaliDateController, _pickNepaliDate),
+              _buildTextFormField('Shareholder', 'Enter shareholder name',
+                  _shareholderController,
+                  focusNode: _shareholderFocusNode),
               const SizedBox(height: 16),
               _buildCompanyDropdown(),
               const SizedBox(height: 16),
+              _buildDatePicker(
+                  'Date (AD)', 'YYYY-MM-DD (AD)', _dateController, _pickDate),
+              const SizedBox(height: 16),
               _buildTextFormField(
                   'Quantity', 'Enter quantity', _quantityController,
+                  focusNode: _quantityFocusNode,
+                  keyboardType: TextInputType.number),
+              const SizedBox(height: 16),
+              _buildTextFormField('Rate', 'Enter rate', _rateController,
+                  focusNode: _rateFocusNode,
                   keyboardType: TextInputType.number),
               const SizedBox(height: 16),
               _buildTextFormField(
-                  'Rate', 'Enter Rate', _priceController,
-                  keyboardType: TextInputType.number),
-              const SizedBox(height: 16),
-              _buildTextFormField(
-                  'DP Charge', 'Enter DP Charge', _dpChargeController,
-                  keyboardType: TextInputType.number),
-              const SizedBox(height: 16),
-              _buildTextFormField(
-                  'Cost Per Share', 'Cost Per Share', _costPerShareController,
-                  keyboardType: TextInputType.number),
-              const SizedBox(height: 16),
-              _buildTextFormField(
-                  'Total Amount', 'Enter Total Amount', _totalAmountController,
+                  'Total Amount', 'Enter total amount', _totalAmountController,
+                  focusNode: _totalAmountFocusNode,
                   keyboardType: TextInputType.number),
               const SizedBox(height: 24),
               _buildSubmitButton(),
@@ -74,10 +102,9 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
     );
   }
 
-  // Helper widget to build the TextFormFields
   Widget _buildTextFormField(
       String label, String hintText, TextEditingController controller,
-      {TextInputType keyboardType = TextInputType.text}) {
+      {FocusNode? focusNode, TextInputType keyboardType = TextInputType.text}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -87,6 +114,7 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          focusNode: focusNode,
           controller: controller,
           keyboardType: keyboardType,
           decoration: InputDecoration(
@@ -108,7 +136,51 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
     );
   }
 
-  // Helper widget to build the Date Picker
+  Widget _buildCompanyDropdown() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Company',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          value: _selectedCompany,
+          items: _companies.map((String company) {
+            return DropdownMenuItem<String>(
+              value: company,
+              child: Text(
+                company,
+                style: const TextStyle(color: Colors.black),
+              ),
+            );
+          }).toList(),
+          decoration: const InputDecoration(
+            hintText: 'Select company',
+            prefixIcon: Icon(Icons.business, size: 20),
+            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            isDense: true,
+            border: OutlineInputBorder(),
+          ),
+          style: const TextStyle(fontSize: 14, color: Colors.black),
+          onChanged: (value) {
+            setState(() {
+              _selectedCompany = value;
+            });
+            _formKey.currentState!.validate();
+          },
+          validator: (value) {
+            if (value == null) {
+              return 'Please select a company';
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _buildDatePicker(String label, String hintText,
       TextEditingController controller, Function() onTap) {
     return Column(
@@ -146,52 +218,6 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
     );
   }
 
-  // Helper widget for Company Dropdown
-  Widget _buildCompanyDropdown() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Company',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        DropdownButtonFormField<String>(
-          value: _selectedCompany,
-          items: _companies.map((String company) {
-            return DropdownMenuItem<String>(
-              value: company,
-              child: Text(
-                company,
-                style: const TextStyle(color: Colors.black),
-              ),
-            );
-          }).toList(),
-          decoration: const InputDecoration(
-            hintText: 'Search for company',
-            prefixIcon: Icon(Icons.search, size: 20),
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            isDense: true,
-            border: OutlineInputBorder(),
-          ),
-          style: const TextStyle(fontSize: 14, color: Colors.black),
-          onChanged: (value) {
-            setState(() {
-              _selectedCompany = value;
-            });
-          },
-          validator: (value) {
-            if (value == null) {
-              return 'Please select a company';
-            }
-            return null;
-          },
-        ),
-      ],
-    );
-  }
-
-  // Submit button widget
   Widget _buildSubmitButton() {
     return SizedBox(
       width: double.infinity,
@@ -199,7 +225,7 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
         style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
         onPressed: _submitForm,
         child: const Text(
-          'Save Buy Transaction',
+          'Save Rights Transaction',
           style: TextStyle(
             fontSize: 16,
             color: Colors.white,
@@ -209,7 +235,6 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
     );
   }
 
-  // Date picker for AD
   Future<void> _pickDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -218,38 +243,17 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
       lastDate: DateTime(2100),
     );
     if (picked != null) {
-      // Grouped setState for both fields
       setState(() {
         _dateController.text = picked.toString().split(' ')[0];
-        _nepaliDateController.text = NepaliDateFormat("yyyy-MM-dd")
-            .format(NepaliDateTime.fromDateTime(picked));
       });
+      _formKey.currentState!.validate();
     }
   }
 
-  // Nepali Date picker
-  Future<void> _pickNepaliDate() async {
-    final NepaliDateTime? picked = await showMaterialDatePicker(
-      context: context,
-      initialDate: NepaliDateTime.now(),
-      firstDate: NepaliDateTime(2000, 1, 1),
-      lastDate: NepaliDateTime(2090, 12, 30),
-    );
-    if (picked != null) {
-      // Grouped setState for both fields
-      setState(() {
-        _nepaliDateController.text =
-            NepaliDateFormat("yyyy-MM-dd").format(picked);
-        _dateController.text = picked.toDateTime().toString().split(' ')[0];
-      });
-    }
-  }
-
-  // Form submission
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Share added successfully!')),
+        const SnackBar(content: Text('Rights transaction saved successfully!')),
       );
     }
   }

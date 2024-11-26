@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:nepali_date_picker/nepali_date_picker.dart';
 import 'package:nepse_trends/constants/color.dart'; // Add this package in pubspec.yaml
 
-class BuyPortfolioScreen extends StatefulWidget {
-  const BuyPortfolioScreen({super.key});
+class SellPortfolioScreen extends StatefulWidget {
+  const SellPortfolioScreen({super.key});
 
   @override
-  _BuyPortfolioScreenState createState() => _BuyPortfolioScreenState();
+  _SellPortfolioScreenState createState() => _SellPortfolioScreenState();
 }
 
-class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
+class _SellPortfolioScreenState extends State<SellPortfolioScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _shareholderController = TextEditingController();
   final TextEditingController _dateController =
@@ -19,8 +19,6 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
   String? _selectedCompany;
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _dpChargeController = TextEditingController();
-  final TextEditingController _costPerShareController = TextEditingController();
   final TextEditingController _totalAmountController = TextEditingController();
 
   final List<String> _companies = ['Company A', 'Company B', 'Company C'];
@@ -37,10 +35,10 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
               _buildTextFormField(
                   'Shareholder', 'Shareholder name', _shareholderController),
               const SizedBox(height: 16),
-              _buildDatePicker('Purchase Date (AD)', 'YYYY-MM-DD (AD)',
+              _buildDatePicker('Sell Date (AD)', 'YYYY-MM-DD (AD)',
                   _dateController, _pickDate),
               const SizedBox(height: 16),
-              _buildDatePicker('Purchase Date (BS)', 'YYYY-MM-DD (BS)',
+              _buildDatePicker('Sell Date (BS)', 'YYYY-MM-DD (BS)',
                   _nepaliDateController, _pickNepaliDate),
               const SizedBox(height: 16),
               _buildCompanyDropdown(),
@@ -49,16 +47,7 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
                   'Quantity', 'Enter quantity', _quantityController,
                   keyboardType: TextInputType.number),
               const SizedBox(height: 16),
-              _buildTextFormField(
-                  'Rate', 'Enter Rate', _priceController,
-                  keyboardType: TextInputType.number),
-              const SizedBox(height: 16),
-              _buildTextFormField(
-                  'DP Charge', 'Enter DP Charge', _dpChargeController,
-                  keyboardType: TextInputType.number),
-              const SizedBox(height: 16),
-              _buildTextFormField(
-                  'Cost Per Share', 'Cost Per Share', _costPerShareController,
+              _buildTextFormField('Rate', 'Enter Rate', _priceController,
                   keyboardType: TextInputType.number),
               const SizedBox(height: 16),
               _buildTextFormField(
@@ -199,7 +188,7 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
         style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
         onPressed: _submitForm,
         child: const Text(
-          'Save Buy Transaction',
+          'Save Sell Transaction',
           style: TextStyle(
             fontSize: 16,
             color: Colors.white,
@@ -249,7 +238,7 @@ class _BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Share added successfully!')),
+        const SnackBar(content: Text('Share sold successfully!')),
       );
     }
   }
