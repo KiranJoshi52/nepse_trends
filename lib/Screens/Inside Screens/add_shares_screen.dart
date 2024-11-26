@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/buy_portfolio_screen.dart';
+import 'package:nepse_trends/Screens/Inside%20Screens/buy_transactions_screen.dart';
 
 class AddSharesScreen extends StatelessWidget {
   const AddSharesScreen({super.key});
@@ -28,7 +29,8 @@ class AddSharesScreen extends StatelessWidget {
             child: TabBarView(
               children: [
                 // Add your content for each tab here
-                Center(child: BuyPortfolioScreen()),
+                // Center(child: BuyPortfolioScreen()),
+                Center(child: BuyTransactionScreen()),
                 Center(child: Text("Sell Content")),
                 Center(child: Text("Cash Dividend Content")),
                 Center(child: Text("IPO Content")),
