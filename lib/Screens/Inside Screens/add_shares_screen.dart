@@ -3,6 +3,7 @@ import 'package:nepse_trends/Screens/Inside%20Screens/Inside%20Screens/auctions_
 import 'package:nepse_trends/Screens/Inside%20Screens/Inside%20Screens/bonus_dividend_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/Inside%20Screens/cash_dividend_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/Inside%20Screens/fpo_portfolio_screen.dart';
+import 'package:nepse_trends/Screens/Inside%20Screens/Inside%20Screens/from_broker_sms.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/Inside%20Screens/ipo_portfolio_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/Inside%20Screens/rights_portfolio_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/Inside%20Screens/sip_portfolio_screen.dart';
@@ -50,7 +51,8 @@ class AddSharesScreen extends StatelessWidget {
                 Center(child: FpoPortfolioScreen()),
                 Center(child: AuctionsPortfolioScreen()),
                 Center(child: RightsPortfolioScreen()),
-                Center(child: Text("From broker SMS Content")),
+                // Center(child: FromBrokerSms()),
+                Center(child: TransactionScreen()),
               ],
             ),
           ),
