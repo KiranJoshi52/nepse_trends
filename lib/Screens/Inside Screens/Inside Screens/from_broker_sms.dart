@@ -60,7 +60,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
             children: [
               // Shareholder Dropdown
               const Text(
-                'Shareholder:',
+                'Shareholder',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8.0),
@@ -90,7 +90,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
 
               // Message Field
               const Text(
-                'Message:',
+                'Message',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8.0),
@@ -258,10 +258,10 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   style: const TextStyle(color: Colors.black54),
                 ),
                 const Spacer(),
-                const Icon(Icons.attach_money, size: 16),
+                // const Icon(Icons.attach_money, size: 16),
                 const SizedBox(width: 8.0),
                 Text(
-                  'Rate: $rate',
+                  'Rate: Rs.$rate',
                   style: const TextStyle(color: Colors.black54),
                 ),
               ],
