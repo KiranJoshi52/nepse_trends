@@ -10,6 +10,44 @@ class TransactionScreen extends StatefulWidget {
 
 class _TransactionScreenState extends State<TransactionScreen> {
   bool showTransactions = true;
+  String? selectedShareholder;
+  TextEditingController messageController = TextEditingController();
+  List<Map<String, String>> transactions = [
+    {
+      'no': '1',
+      'symbol': 'IBM',
+      'action': 'BUY',
+      'date': '2023-07-01',
+      'quantity': '100',
+      'rate': '100',
+      'total': 'Rs.10,000',
+    },
+    {
+      'no': '2',
+      'symbol': 'JBBL',
+      'action': 'SELL',
+      'date': '2023-09-01',
+      'quantity': '60',
+      'rate': '100',
+      'total': 'Rs.6,000',
+    },
+  ];
+
+  TextEditingController symbolController = TextEditingController();
+  TextEditingController actionController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
+  TextEditingController rateController = TextEditingController();
+  TextEditingController totalController = TextEditingController();
+
+  Map<String, String>? currentEditingTransaction;
+
+  @override
+  void initState() {
+    super.initState();
+    messageController.text =
+        'Sample Message: BNo.XX Purchased on 2023-07-05 (MKHC 50 kitta @ 227) - BAmt.11,422.10';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +66,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
               const SizedBox(height: 8.0),
               DropdownButtonFormField<String>(
                 hint: const Text('Select a shareholder'),
+                value: selectedShareholder,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(
                       vertical: 12.0, horizontal: 16.0),
@@ -42,7 +81,9 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         ))
                     .toList(),
                 onChanged: (value) {
-                  // Handle value selection
+                  setState(() {
+                    selectedShareholder = value;
+                  });
                 },
               ),
               const SizedBox(height: 16.0),
@@ -54,6 +95,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
               ),
               const SizedBox(height: 8.0),
               TextFormField(
+                controller: messageController,
                 maxLines: 3,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(
@@ -63,8 +105,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   ),
                   hintText: 'Enter your message here...',
                 ),
-                initialValue:
-                    'Sample Message: BNo.XX Purchased on 2023-07-05 (MKHC 50 kitta @ 227) - BAmt.11,422.10',
               ),
               const SizedBox(height: 16.0),
 
@@ -101,26 +141,17 @@ class _TransactionScreenState extends State<TransactionScreen> {
               // Transaction List
               if (showTransactions)
                 Column(
-                  children: [
-                    _buildTransactionCard(
-                      '1',
-                      'IBM',
-                      'BUY',
-                      '2023-07-01',
-                      '100',
-                      '100',
-                      '\$10,000',
-                    ),
-                    _buildTransactionCard(
-                      '2',
-                      'JBBL',
-                      'SELL',
-                      '2023-09-01',
-                      '60',
-                      '100',
-                      '\$6,000',
-                    ),
-                  ],
+                  children: transactions.map((transaction) {
+                    return _buildTransactionCard(
+                      transaction['no']!,
+                      transaction['symbol']!,
+                      transaction['action']!,
+                      transaction['date']!,
+                      transaction['quantity']!,
+                      transaction['rate']!,
+                      transaction['total']!,
+                    );
+                  }).toList(),
                 ),
             ],
           ),
@@ -132,8 +163,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
               child: ElevatedButton.icon(
                 onPressed: () {
                   // Save data action
+                  print('Saving data...');
+                  print('Message: ${messageController.text}');
+                  print('Selected Shareholder: $selectedShareholder');
+                  // Implement save functionality here
                 },
-                // icon: const Icon(Icons.save),
                 label: const Text(
                   'Save Data',
                   style: TextStyle(fontSize: 16),
@@ -241,13 +275,13 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 color: Colors.black87,
               ),
             ),
-            const SizedBox(height: 12.0),
+            const SizedBox(height: 9.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton.icon(
                   onPressed: () {
-                    // Edit action
+                    _editTransaction(no);
                   },
                   icon: const Icon(Icons.edit, color: Colors.blue),
                   label: const Text(
@@ -258,7 +292,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 const SizedBox(width: 8.0),
                 TextButton.icon(
                   onPressed: () {
-                    // Delete action
+                    _deleteTransaction(no);
                   },
                   icon: const Icon(Icons.delete, color: Colors.red),
                   label: const Text(
@@ -272,5 +306,93 @@ class _TransactionScreenState extends State<TransactionScreen> {
         ),
       ),
     );
+  }
+
+  void _editTransaction(String no) {
+    setState(() {
+      currentEditingTransaction =
+          transactions.firstWhere((transaction) => transaction['no'] == no);
+      symbolController.text = currentEditingTransaction!['symbol']!;
+      actionController.text = currentEditingTransaction!['action']!;
+      dateController.text = currentEditingTransaction!['date']!;
+      quantityController.text = currentEditingTransaction!['quantity']!;
+      rateController.text = currentEditingTransaction!['rate']!;
+      totalController.text = currentEditingTransaction!['total']!;
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Transaction'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: symbolController,
+                decoration: const InputDecoration(labelText: 'Symbol'),
+              ),
+              TextFormField(
+                controller: actionController,
+                decoration: const InputDecoration(labelText: 'Action'),
+              ),
+              TextFormField(
+                controller: dateController,
+                decoration: const InputDecoration(labelText: 'Date'),
+              ),
+              TextFormField(
+                controller: quantityController,
+                decoration: const InputDecoration(labelText: 'Quantity'),
+                keyboardType: TextInputType.number,
+              ),
+              TextFormField(
+                controller: rateController,
+                decoration: const InputDecoration(labelText: 'Rate'),
+                keyboardType: TextInputType.number,
+              ),
+              TextFormField(
+                controller: totalController,
+                decoration: const InputDecoration(labelText: 'Total'),
+                keyboardType: TextInputType.number,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              _saveEditedTransaction();
+              Navigator.pop(context);
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _saveEditedTransaction() {
+    setState(() {
+      currentEditingTransaction!['symbol'] = symbolController.text;
+      currentEditingTransaction!['action'] = actionController.text;
+      currentEditingTransaction!['date'] = dateController.text;
+      currentEditingTransaction!['quantity'] = quantityController.text;
+      currentEditingTransaction!['rate'] = rateController.text;
+      currentEditingTransaction!['total'] = totalController.text;
+    });
+
+    currentEditingTransaction = null; // Clear editing state
+  }
+
+  void _deleteTransaction(String no) {
+    setState(() {
+      transactions.removeWhere((transaction) => transaction['no'] == no);
+    });
   }
 }
