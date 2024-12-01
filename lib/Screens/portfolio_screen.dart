@@ -149,7 +149,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
                   ),
                 ),
                 const AllocationScreen(),
-                AddSharesScreen(),
+                const AddSharesScreen(),
                 const Center(child: Text('History Screen')),
                 const Center(child: Text('Profit & Loss Screen')),
                 const Center(child: ImportPortfolioScreen()),
