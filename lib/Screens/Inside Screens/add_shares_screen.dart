@@ -52,7 +52,7 @@ class AddSharesScreen extends StatelessWidget {
                 Center(child: AuctionsPortfolioScreen()),
                 Center(child: RightsPortfolioScreen()),
                 // Center(child: FromBrokerSms()),
-                Center(child: TransactionScreen()),
+                Center(child: FromBrokerSms()),
               ],
             ),
           ),

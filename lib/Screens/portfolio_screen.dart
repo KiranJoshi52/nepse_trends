@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/add_shares_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/allocation_screen.dart';
+import 'package:nepse_trends/Screens/Inside%20Screens/import_portfolio_screen.dart';
 import 'package:nepse_trends/constants/color.dart';
 
 class PortfolioScreen extends StatefulWidget {
@@ -150,7 +151,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
                 AddSharesScreen(),
                 const Center(child: Text('History Screen')),
                 const Center(child: Text('Profit & Loss Screen')),
-                const Center(child: Text('Import Screen')),
+                const Center(child: ImportPortfolioScreen()),
               ],
             ),
           ),

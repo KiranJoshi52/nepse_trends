@@ -35,6 +35,7 @@ dependencies:
   provider: ^6.0.5
   fl_chart: any
   nepali_date_picker: any
+  file_picker: any
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

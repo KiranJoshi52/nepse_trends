@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:nepse_trends/constants/color.dart';
 
-class TransactionScreen extends StatefulWidget {
-  const TransactionScreen({super.key});
+class FromBrokerSms extends StatefulWidget {
+  const FromBrokerSms({super.key});
 
   @override
-  _TransactionScreenState createState() => _TransactionScreenState();
+  _FromBrokerSmsState createState() => _FromBrokerSmsState();
 }
 
-class _TransactionScreenState extends State<TransactionScreen> {
+class _FromBrokerSmsState extends State<FromBrokerSms> {
   bool showTransactions = true;
   String? selectedShareholder;
   TextEditingController messageController = TextEditingController();
