@@ -32,13 +32,13 @@ class AllocationScreen extends StatelessWidget {
             children: [
               // First Card
               AllocationCard(
-                title: 'Distribution Chart',
+                title: 'Investment',
                 jsonData: jsonData,
               ),
               SizedBox(height: 4), // Space between cards
               // Second Card
               AllocationCard(
-                title: 'Portfolio Status',
+                title: 'Market value',
                 jsonData: jsonData2,
               ),
             ],

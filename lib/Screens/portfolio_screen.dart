@@ -104,7 +104,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
                           controller: _pageController,
                           children: [
                             _buildPortfolioCard(),
-                            _buildPortfolioCard(),
+                            _buildOverallPortfolioCard(),
                           ],
                         ),
                       ),
@@ -127,7 +127,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Your Holdings",
+                              "My Holdings",
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -185,10 +185,45 @@ class _PortfolioScreenState extends State<PortfolioScreen>
               const SizedBox(height: 10),
               const PortfolioRow("Current Investment", "Rs. 1,16,641.78"),
               const PortfolioRow("Net Worth", "Rs. 1,87,255.34"),
-              const PortfolioRow("Unrealized Gain", "Rs. 71,773.22 (+61.53%)"),
+              const PortfolioRow("Unrealized Gain/loss today", "Rs. 71"),
               const PortfolioRow("Today's Gain", "Rs. 832.0 (+0.72%)"),
-              const PortfolioRow("Units", "793.0"),
-              const PortfolioRow("Best Performer", "SARBTM"),
+              const PortfolioRow("Net-worth", "793.0"),
+              const PortfolioRow("Realised gain/loss today", "Rs. 900"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOverallPortfolioCard() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        color: Colors.green[100],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Overall Portfolio",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green[900],
+                ),
+              ),
+              const SizedBox(height: 10),
+              const PortfolioRow("Overall Purchase", "Rs. 1,16,641.78"),
+              const PortfolioRow("Overall sale", "Rs. 1,87,255.34"),
+              const PortfolioRow("Taxes & commission on purchase", "Rs. 71"),
+              const PortfolioRow("Capital gain tax", "Rs. 832.0 (+0.72%)"),
+              const PortfolioRow("Commission on sale", "793.0"),
+              const PortfolioRow("Realised gain/loss", "SARBTM"),
             ],
           ),
         ),
