@@ -3,42 +3,101 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:nepse_trends/constants/color.dart';
 
-class AllocationScreen extends StatelessWidget {
+class AllocationScreen extends StatefulWidget {
   const AllocationScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    const jsonData = '''
+  State<AllocationScreen> createState() => _AllocationScreenState();
+}
+
+class _AllocationScreenState extends State<AllocationScreen> {
+  // Dropdown values
+  String selectedSector = 'Finance';
+  String selectedCompany = 'Company A';
+
+  // Dummy data for dropdowns
+  final sectors = ['Finance', 'Technology', 'Healthcare'];
+  final companies = {
+    'Finance': ['Company A', 'Company B', 'Company C'],
+    'Technology': ['Company D', 'Company E'],
+    'Healthcare': ['Company F', 'Company G']
+  };
+
+  // Sample JSON data for pie charts
+  static const jsonData = '''
     [
       {"label": "Category A", "value": 40, "color": "0xff0293ee"},
       {"label": "Category B", "value": 30, "color": "0xfff8b250"},
       {"label": "Category C", "value": 20, "color": "0xff845bef"},
       {"label": "Category D", "value": 10, "color": "0xff13d38e"}
     ]
-    ''';
+  ''';
 
-    const jsonData2 = '''
+  static const jsonData2 = '''
     [
       {"label": "Investment", "value": 40, "color": "0xff336699"},
       {"label": "Market Value", "value": 30, "color": "0xff800080"}
     ]
-    ''';
+  ''';
 
-    return const Scaffold(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // First Card
-              AllocationCard(
+              const SizedBox(height: 12.0),
+              // Sector Dropdown
+              DropdownButtonFormField<String>(
+                value: selectedSector,
+                decoration: const InputDecoration(
+                  labelText: 'Select Sector',
+                  border: OutlineInputBorder(),
+                ),
+                items: sectors
+                    .map((sector) => DropdownMenuItem(
+                          value: sector,
+                          child: Text(sector),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedSector = value!;
+                    selectedCompany = companies[selectedSector]!.first;
+                  });
+                },
+              ),
+              const SizedBox(height: 16),
+              // Company Dropdown
+              DropdownButtonFormField<String>(
+                value: selectedCompany,
+                decoration: const InputDecoration(
+                  labelText: 'Select Company',
+                  border: OutlineInputBorder(),
+                ),
+                items: companies[selectedSector]!
+                    .map((company) => DropdownMenuItem(
+                          value: company,
+                          child: Text(company),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedCompany = value!;
+                  });
+                },
+              ),
+              const SizedBox(height: 3),
+              // Cards
+              const AllocationCard(
                 title: 'Investment',
                 jsonData: jsonData,
               ),
-              SizedBox(height: 4), // Space between cards
-              // Second Card
-              AllocationCard(
-                title: 'Market value',
+              const SizedBox(height: 4),
+              const AllocationCard(
+                title: 'Market Value',
                 jsonData: jsonData2,
               ),
             ],
@@ -59,15 +118,14 @@ class AllocationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 6, // Shadow intensity
+      elevation: 6,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16), // Rounded corners
+        borderRadius: BorderRadius.circular(16),
       ),
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title Row with Gradient
           Container(
             width: double.infinity,
             decoration: const BoxDecoration(
@@ -80,7 +138,7 @@ class AllocationCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 9.0),
             child: Center(
               child: Text(
-                title, // Dynamic title
+                title,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -89,13 +147,11 @@ class AllocationCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 20), // Increased spacing
-          // Doughnut Chart
+          const SizedBox(height: 20),
           DoughnutChart(jsonData: jsonData),
-          const SizedBox(height: 24), // Increased spacing
-          // Legend
+          const SizedBox(height: 24),
           Legend(jsonData: jsonData),
-          const SizedBox(height: 24), // Bottom padding
+          const SizedBox(height: 24),
         ],
       ),
     );
@@ -115,7 +171,7 @@ class DoughnutChart extends StatelessWidget {
         color: Color(int.parse(data['color'])),
         value: data['value'].toDouble(),
         title: '${data['value']}%',
-        radius: 60, // Increased for better visuals
+        radius: 60,
         titleStyle: const TextStyle(
           fontSize: 14,
           color: Colors.white,
@@ -126,13 +182,13 @@ class DoughnutChart extends StatelessWidget {
 
     return Center(
       child: SizedBox(
-        height: 220, // Adjusted height
+        height: 220,
         child: PieChart(
           PieChartData(
             sections: sections,
             centerSpaceRadius: 50,
             borderData: FlBorderData(show: false),
-            sectionsSpace: 2, // Space between sections
+            sectionsSpace: 2,
           ),
         ),
       ),
@@ -151,22 +207,22 @@ class Legend extends StatelessWidget {
 
     return Center(
       child: Wrap(
-        spacing: 16.0, // Horizontal space between items
-        runSpacing: 16.0, // Vertical space between rows
-        alignment: WrapAlignment.center, // Center items in rows
+        spacing: 16.0,
+        runSpacing: 16.0,
+        alignment: WrapAlignment.center,
         children: parsedData.map((data) {
           return Row(
-            mainAxisSize: MainAxisSize.min, // Compact size
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 width: 14,
                 height: 14,
                 decoration: BoxDecoration(
                   color: Color(int.parse(data['color'])),
-                  borderRadius: BorderRadius.circular(7), // Circular dot
+                  borderRadius: BorderRadius.circular(7),
                 ),
               ),
-              const SizedBox(width: 12), // Adjusted space
+              const SizedBox(width: 12),
               Text(
                 data['label'],
                 style: const TextStyle(
