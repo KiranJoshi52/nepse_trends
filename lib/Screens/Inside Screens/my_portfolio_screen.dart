@@ -11,21 +11,23 @@ class MyPortfolioScreen extends StatefulWidget {
 class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
   final PageController _pageController = PageController();
 
+  String? selectedInvestor;
+  String? selectedInvestorType;
+
+  final List<String> investors = ["Investor 1", "Investor 2", "Investor 3"];
+  final List<String> investorTypes = ["Retail", "Institutional", "HNI"];
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          // NEPSE Info Section
+          // NEPSE Info Section (Moved to the top)
           Padding(
             padding: const EdgeInsets.only(top: 12.0),
             child: Container(
-              // color: Colors.green[100],
-              padding:
-                  // const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                  const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "Nepse: 2757.27",
@@ -48,6 +50,65 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
             ),
           ),
 
+          // Investor Dropdowns (Reduced height by 40%)
+          Padding(
+            // padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: Column(
+              children: [
+                // Choose Investor Dropdown
+                Container(
+                  height: 52, // Reduced height by 40% from 80
+                  child: DropdownButtonFormField<String>(
+                    value: selectedInvestor,
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedInvestor = newValue;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Choose Investor',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    items: investors.map((String investor) {
+                      return DropdownMenuItem<String>(
+                        value: investor,
+                        child: Text(investor),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Investor Type Dropdown
+                Container(
+                  height: 52, // Reduced height by 40% from 80
+                  child: DropdownButtonFormField<String>(
+                    value: selectedInvestorType,
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedInvestorType = newValue;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Investor Type',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    items: investorTypes.map((String type) {
+                      return DropdownMenuItem<String>(
+                        value: type,
+                        child: Text(type),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           // PageView with Smooth Indicator
           SizedBox(
             height: 290,
@@ -59,7 +120,6 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
               ],
             ),
           ),
-          // const SizedBox(height: 16),
           SmoothPageIndicator(
             controller: _pageController,
             count: 2,

@@ -48,46 +48,52 @@ class _AllocationScreenState extends State<AllocationScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 12.0),
+              const SizedBox(height: 16.0),
               // Sector Dropdown
-              DropdownButtonFormField<String>(
-                value: selectedSector,
-                decoration: const InputDecoration(
-                  labelText: 'Select Sector',
-                  border: OutlineInputBorder(),
+              SizedBox(
+                height: 52.0,
+                child: DropdownButtonFormField<String>(
+                  value: selectedSector,
+                  decoration: const InputDecoration(
+                    labelText: 'Select Sector',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: sectors
+                      .map((sector) => DropdownMenuItem(
+                            value: sector,
+                            child: Text(sector),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedSector = value!;
+                      selectedCompany = companies[selectedSector]!.first;
+                    });
+                  },
                 ),
-                items: sectors
-                    .map((sector) => DropdownMenuItem(
-                          value: sector,
-                          child: Text(sector),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedSector = value!;
-                    selectedCompany = companies[selectedSector]!.first;
-                  });
-                },
               ),
               const SizedBox(height: 16),
               // Company Dropdown
-              DropdownButtonFormField<String>(
-                value: selectedCompany,
-                decoration: const InputDecoration(
-                  labelText: 'Select Company',
-                  border: OutlineInputBorder(),
+              SizedBox(
+                height: 52.0,
+                child: DropdownButtonFormField<String>(
+                  value: selectedCompany,
+                  decoration: const InputDecoration(
+                    labelText: 'Select Company',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: companies[selectedSector]!
+                      .map((company) => DropdownMenuItem(
+                            value: company,
+                            child: Text(company),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCompany = value!;
+                    });
+                  },
                 ),
-                items: companies[selectedSector]!
-                    .map((company) => DropdownMenuItem(
-                          value: company,
-                          child: Text(company),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCompany = value!;
-                  });
-                },
               ),
               const SizedBox(height: 3),
               // Cards
