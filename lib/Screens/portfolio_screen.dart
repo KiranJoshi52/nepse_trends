@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:nepse_trends/Screens/Inside%20Screens/my_portfolio_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/add_shares_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/allocation_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/import_portfolio_screen.dart';
@@ -93,140 +93,17 @@ class _PortfolioScreenState extends State<PortfolioScreen>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // PageView with Smooth Indicator
-                      SizedBox(
-                        height: 300,
-                        child: PageView(
-                          controller: _pageController,
-                          children: [
-                            _buildPortfolioCard(),
-                            _buildOverallPortfolioCard(),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      SmoothPageIndicator(
-                        controller: _pageController,
-                        count: 2,
-                        effect: const WormEffect(
-                          dotColor: Colors.grey,
-                          activeDotColor: Colors.green,
-                          dotHeight: 10,
-                          dotWidth: 10,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      // Your Holdings Section
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "My Holdings",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green[900],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const HoldingCard("CLI", 10, 678.0, 6780.0, -30.0),
-                            const HoldingCard(
-                                "GBIME", 120, 255.0, 30600.0, -120.0),
-                            const HoldingCard("GCIL", 11, 487.0, 5357.0, 22.0,
-                                isPositive: true),
-                            const HoldingCard("H8020", 100, 10.0, 1000.0, -5.0),
-                            const HoldingCard("HRL", 20, 865.0, 17300.0, -20.0),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const AllocationScreen(),
-                const AddSharesScreen(),
-                const Center(child: Text('History Screen')),
-                const Center(child: Text('Profit & Loss Screen')),
-                const Center(child: ImportPortfolioScreen()),
+              children: const [
+                MyPortfolioScreen(),
+                AllocationScreen(),
+                AddSharesScreen(),
+                Center(child: Text('History Screen')),
+                Center(child: Text('Profit & Loss Screen')),
+                Center(child: ImportPortfolioScreen()),
               ],
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildPortfolioCard() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        color: Colors.green[100],
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Current Portfolio",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green[900],
-                ),
-              ),
-              const SizedBox(height: 10),
-              const PortfolioRow("Current Investment", "Rs. 1,16,641.78"),
-              const PortfolioRow("Net Worth", "Rs. 1,87,255.34"),
-              const PortfolioRow("Unrealized Gain/loss today", "Rs. 71"),
-              const PortfolioRow("Today's Gain", "Rs. 832.0 (+0.72%)"),
-              const PortfolioRow("Net-worth", "793.0"),
-              const PortfolioRow("Realised gain/loss today", "Rs. 900"),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOverallPortfolioCard() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        color: Colors.green[100],
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Overall Portfolio",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green[900],
-                ),
-              ),
-              const SizedBox(height: 10),
-              const PortfolioRow("Overall Purchase", "Rs. 1,16,641.78"),
-              const PortfolioRow("Overall sale", "Rs. 1,87,255.34"),
-              const PortfolioRow("Taxes & commission on purchase", "Rs. 71"),
-              const PortfolioRow("Capital gain tax", "Rs. 832.0 (+0.72%)"),
-              const PortfolioRow("Commission on sale", "793.0"),
-              const PortfolioRow("Realised gain/loss", "SARBTM"),
-            ],
-          ),
-        ),
       ),
     );
   }
