@@ -16,6 +16,38 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
+          // NEPSE Info Section
+          Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: Container(
+              // color: Colors.green[100],
+              padding:
+                  // const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Nepse: 2757.27",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green[900],
+                    ),
+                  ),
+                  Text(
+                    "(+0.81%)",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green[700],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
           // PageView with Smooth Indicator
           SizedBox(
             height: 290,
