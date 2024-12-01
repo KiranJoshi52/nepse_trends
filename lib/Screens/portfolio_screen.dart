@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/add_shares_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/allocation_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/import_portfolio_screen.dart';
@@ -8,7 +9,7 @@ class PortfolioScreen extends StatefulWidget {
   static const String portfolioScreenRoute = '/portfolio';
 
   const PortfolioScreen({super.key});
-  
+
   @override
   _PortfolioScreenState createState() => _PortfolioScreenState();
 }
@@ -16,6 +17,7 @@ class PortfolioScreen extends StatefulWidget {
 class _PortfolioScreenState extends State<PortfolioScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
@@ -26,6 +28,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
   @override
   void dispose() {
     _tabController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -44,35 +47,47 @@ class _PortfolioScreenState extends State<PortfolioScreen>
       ),
       body: Column(
         children: [
-          // Making the TabBar scrollable horizontally
+          // TabBar with scrolling functionality
           TabBar(
             controller: _tabController,
-            isScrollable: true, // Allows horizontal scrolling
+            isScrollable: true,
             tabs: const [
               Tab(
-                  child: Text('My Portfolio',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold))),
+                child: Text(
+                  'My Portfolio',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
               Tab(
-                  child: Text('Allocation',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold))),
+                child: Text(
+                  'Allocation',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
               Tab(
-                  child: Text('Add Shares',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold))),
+                child: Text(
+                  'Add Shares',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
               Tab(
-                  child: Text('History',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold))),
+                child: Text(
+                  'History',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
               Tab(
-                  child: Text('Profit & Loss',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold))),
+                child: Text(
+                  'Profit & Loss',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
               Tab(
-                  child: Text('Import',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold))),
+                child: Text(
+                  'Import',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
             ],
           ),
           Expanded(
@@ -82,42 +97,29 @@ class _PortfolioScreenState extends State<PortfolioScreen>
                 SingleChildScrollView(
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          color: Colors.green[100],
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Current Portfolio",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green[900],
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                const PortfolioRow(
-                                    "Current Investment", "Rs. 1,16,641.78"),
-                                const PortfolioRow(
-                                    "Net Worth", "Rs. 1,87,255.34"),
-                                const PortfolioRow("Unrealized Gain",
-                                    "Rs. 71,773.22 (+61.53%)"),
-                                const PortfolioRow(
-                                    "Today's Gain", "Rs. 832.0 (+0.72%)"),
-                                const PortfolioRow("Units", "793.0"),
-                                const PortfolioRow("Best Performer", "SARBTM"),
-                              ],
-                            ),
-                          ),
+                      // PageView with Smooth Indicator
+                      SizedBox(
+                        height: 300,
+                        child: PageView(
+                          controller: _pageController,
+                          children: [
+                            _buildPortfolioCard(),
+                            _buildPortfolioCard(),
+                          ],
                         ),
                       ),
+                      const SizedBox(height: 16),
+                      SmoothPageIndicator(
+                        controller: _pageController,
+                        count: 2,
+                        effect: const WormEffect(
+                          dotColor: Colors.grey,
+                          activeDotColor: Colors.green,
+                          dotHeight: 10,
+                          dotWidth: 10,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
                       // Your Holdings Section
                       Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -146,7 +148,6 @@ class _PortfolioScreenState extends State<PortfolioScreen>
                     ],
                   ),
                 ),
-                // const Center(child: Text('Allocation Screen')),
                 const AllocationScreen(),
                 AddSharesScreen(),
                 const Center(child: Text('History Screen')),
@@ -156,6 +157,41 @@ class _PortfolioScreenState extends State<PortfolioScreen>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildPortfolioCard() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        color: Colors.green[100],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Current Portfolio",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green[900],
+                ),
+              ),
+              const SizedBox(height: 10),
+              const PortfolioRow("Current Investment", "Rs. 1,16,641.78"),
+              const PortfolioRow("Net Worth", "Rs. 1,87,255.34"),
+              const PortfolioRow("Unrealized Gain", "Rs. 71,773.22 (+61.53%)"),
+              const PortfolioRow("Today's Gain", "Rs. 832.0 (+0.72%)"),
+              const PortfolioRow("Units", "793.0"),
+              const PortfolioRow("Best Performer", "SARBTM"),
+            ],
+          ),
+        ),
       ),
     );
   }
