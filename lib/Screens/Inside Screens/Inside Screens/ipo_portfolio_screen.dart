@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nepali_date_picker/nepali_date_picker.dart';
 import 'package:nepse_trends/constants/color.dart'; // Add this package in pubspec.yaml
 
 class IPOPortfolioScreen extends StatefulWidget {
@@ -140,6 +139,7 @@ class _IPOPortfolioScreenState extends State<IPOPortfolioScreen> {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
+          hint: const Text('Select company'),
           value: _selectedCompany,
           items: _companies.map((String company) {
             return DropdownMenuItem<String>(
@@ -151,7 +151,6 @@ class _IPOPortfolioScreenState extends State<IPOPortfolioScreen> {
             );
           }).toList(),
           decoration: const InputDecoration(
-            hintText: 'Search for company',
             prefixIcon: Icon(Icons.search, size: 20),
             contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             isDense: true,

@@ -108,6 +108,7 @@ class _SipPortfolioScreenState extends State<SipPortfolioScreen> {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
+          hint: Text(hintText),
           value: selectedValue,
           items: items.map((String item) {
             return DropdownMenuItem<String>(
@@ -118,12 +119,11 @@ class _SipPortfolioScreenState extends State<SipPortfolioScreen> {
               ),
             );
           }).toList(),
-          decoration: InputDecoration(
-            hintText: hintText,
+          decoration: const InputDecoration(
             contentPadding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             isDense: true,
-            border: const OutlineInputBorder(),
+            border: OutlineInputBorder(),
           ),
           style: const TextStyle(fontSize: 14, color: Colors.black),
           onChanged: onChanged,

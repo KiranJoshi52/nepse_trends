@@ -147,6 +147,7 @@ class _AuctionsPortfolioScreenState extends State<AuctionsPortfolioScreen> {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
+          hint: const Text('Select company'),
           value: _selectedCompany,
           items: _companies.map((String company) {
             return DropdownMenuItem<String>(
@@ -158,7 +159,6 @@ class _AuctionsPortfolioScreenState extends State<AuctionsPortfolioScreen> {
             );
           }).toList(),
           decoration: const InputDecoration(
-            hintText: 'Select company',
             prefixIcon: Icon(Icons.business, size: 20),
             contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             isDense: true,
