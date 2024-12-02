@@ -145,37 +145,41 @@ class _RightsPortfolioScreenState extends State<RightsPortfolioScreen> {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
-        DropdownButtonFormField<String>(
-          value: _selectedCompany,
-          items: _companies.map((String company) {
-            return DropdownMenuItem<String>(
-              value: company,
-              child: Text(
-                company,
-                style: const TextStyle(color: Colors.black),
-              ),
-            );
-          }).toList(),
-          decoration: const InputDecoration(
-            hintText: 'Select company',
-            prefixIcon: Icon(Icons.business, size: 20),
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            isDense: true,
-            border: OutlineInputBorder(),
+        SizedBox(
+          height: 43.0,
+          child: DropdownButtonFormField<String>(
+            hint: const Text('Select company'),
+            value: _selectedCompany,
+            items: _companies.map((String company) {
+              return DropdownMenuItem<String>(
+                value: company,
+                child: Text(
+                  company,
+                  style: const TextStyle(color: Colors.black),
+                ),
+              );
+            }).toList(),
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.business, size: 20),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              isDense: true,
+              border: OutlineInputBorder(),
+            ),
+            style: const TextStyle(fontSize: 14, color: Colors.black),
+            onChanged: (value) {
+              setState(() {
+                _selectedCompany = value;
+              });
+              _formKey.currentState!.validate();
+            },
+            validator: (value) {
+              if (value == null) {
+                return 'Please select a company';
+              }
+              return null;
+            },
           ),
-          style: const TextStyle(fontSize: 14, color: Colors.black),
-          onChanged: (value) {
-            setState(() {
-              _selectedCompany = value;
-            });
-            _formKey.currentState!.validate();
-          },
-          validator: (value) {
-            if (value == null) {
-              return 'Please select a company';
-            }
-            return null;
-          },
         ),
       ],
     );
@@ -191,26 +195,29 @@ class _RightsPortfolioScreenState extends State<RightsPortfolioScreen> {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
-        GestureDetector(
-          onTap: onTap,
-          child: AbsorbPointer(
-            child: TextFormField(
-              controller: controller,
-              decoration: InputDecoration(
-                hintText: hintText,
-                prefixIcon: const Icon(Icons.calendar_today, size: 20),
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                isDense: true,
-                border: const OutlineInputBorder(),
+        SizedBox(
+          height: 43.0,
+          child: GestureDetector(
+            onTap: onTap,
+            child: AbsorbPointer(
+              child: TextFormField(
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: hintText,
+                  prefixIcon: const Icon(Icons.calendar_today, size: 20),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                  isDense: true,
+                  border: const OutlineInputBorder(),
+                ),
+                style: const TextStyle(fontSize: 14),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a date';
+                  }
+                  return null;
+                },
               ),
-              style: const TextStyle(fontSize: 14),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please select a date';
-                }
-                return null;
-              },
             ),
           ),
         ),
