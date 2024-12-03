@@ -146,12 +146,20 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const HoldingCard("CLI", 10, 678.0, 6780.0, -30.0),
-                const HoldingCard("GBIME", 120, 255.0, 30600.0, -120.0),
+                const HoldingCard("CLI", 10, 678.0, 6780.0, -30.0,
+                    wacc: 12.5, totalInvestment: 5000.0, totalReturn: 1780.0),
+                const HoldingCard("GBIME", 120, 255.0, 30600.0, -120.0,
+                    wacc: 8.0, totalInvestment: 30000.0, totalReturn: 600.0),
                 const HoldingCard("GCIL", 11, 487.0, 5357.0, 22.0,
-                    isPositive: true),
-                const HoldingCard("H8020", 100, 10.0, 1000.0, -5.0),
-                const HoldingCard("HRL", 20, 865.0, 17300.0, -20.0),
+                    isPositive: true,
+                    wacc: 10.0,
+                    totalInvestment: 5000.0,
+                    totalReturn: 357.0),
+                const HoldingCard("H8020", 100, 10.0, 1000.0, -5.0,
+                    wacc: 5.0, totalInvestment: 950.0, totalReturn: 50.0),
+                const HoldingCard("HRL", 20, 865.0, 17300.0, -20.0,
+                    wacc: 15.0, totalInvestment: 15000.0, totalReturn: 2300.0),
+
               ],
             ),
           ),
@@ -237,56 +245,121 @@ class HoldingCard extends StatelessWidget {
   final double ltp;
   final double value;
   final double change;
+  final double wacc; // Weighted Average Cost of Capital
+  final double totalInvestment;
+  final double totalReturn;
   final bool isPositive;
 
-  const HoldingCard(this.symbol, this.units, this.ltp, this.value, this.change,
-      {super.key, this.isPositive = false});
+  const HoldingCard(
+    this.symbol,
+    this.units,
+    this.ltp,
+    this.value,
+    this.change, {
+    super.key,
+    this.isPositive = false,
+    this.wacc = 0.0,
+    this.totalInvestment = 0.0,
+    this.totalReturn = 0.0,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
+      child: ExpansionTile(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  symbol,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text("Units: $units, LTP: Rs. $ltp"),
-              ],
+            Expanded(
+              flex: 3, // Adjust the flex value to allocate space dynamically
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    symbol,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis, // Prevents overflow
+                  ),
+                  Text(
+                    "Units: $units, LTP: Rs. $ltp",
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  "Rs. ${value.toStringAsFixed(2)}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+            Expanded(
+              flex: 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    "Rs. ${value.toStringAsFixed(2)}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                Text(
-                  "Rs. ${change.toStringAsFixed(2)}",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: isPositive ? Colors.green : Colors.red,
+                  Text(
+                    "Rs. ${change.toStringAsFixed(2)}",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: isPositive ? Colors.green : Colors.red,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildDetailRow("WACC", "Rs. ${wacc.toStringAsFixed(2)}"),
+                _buildDetailRow("Total Investment",
+                    "Rs. ${totalInvestment.toStringAsFixed(2)}"),
+                _buildDetailRow(
+                    "Total Return", "Rs. ${totalReturn.toStringAsFixed(2)}"),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(String title, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+          Flexible(
+            child: Text(
+              value,
+              style: const TextStyle(fontSize: 16),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
+
+
 
 class PortfolioRow extends StatelessWidget {
   final String title;
