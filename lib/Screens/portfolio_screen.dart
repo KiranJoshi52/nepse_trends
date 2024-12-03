@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nepse_trends/Screens/Inside%20Screens/check_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/my_portfolio_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/add_shares_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/allocation_screen.dart';
