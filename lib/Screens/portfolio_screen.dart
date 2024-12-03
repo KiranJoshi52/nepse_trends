@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:nepse_trends/Screens/Inside%20Screens/check_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/my_portfolio_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/add_shares_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/allocation_screen.dart';
 import 'package:nepse_trends/Screens/Inside%20Screens/import_portfolio_screen.dart';
+import 'package:nepse_trends/Screens/Inside%20Screens/versus_comparison_app.dart';
+import 'package:nepse_trends/Screens/Inside%20Screens/watchlists.dart';
 import 'package:nepse_trends/constants/color.dart';
 
 class PortfolioScreen extends StatefulWidget {
@@ -22,7 +25,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 6, vsync: this); // 6 tabs
+    _tabController = TabController(length: 7, vsync: this); // 6 tabs
   }
 
   @override
@@ -66,6 +69,12 @@ class _PortfolioScreenState extends State<PortfolioScreen>
               ),
               Tab(
                 child: Text(
+                  'Watchlists',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Tab(
+                child: Text(
                   'Add Shares',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
@@ -96,8 +105,10 @@ class _PortfolioScreenState extends State<PortfolioScreen>
               children: const [
                 MyPortfolioScreen(),
                 AllocationScreen(),
+                Watchlists(),
                 AddSharesScreen(),
-                Center(child: Text('History Screen')),
+                // Center(child: Text('History Screen')),
+                Center(child: VersusComparisonApp()),
                 Center(child: Text('Profit & Loss Screen')),
                 Center(child: ImportPortfolioScreen()),
               ],
