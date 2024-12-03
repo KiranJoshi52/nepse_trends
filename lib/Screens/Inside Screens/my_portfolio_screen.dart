@@ -267,71 +267,95 @@ class HoldingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
-      child: ExpansionTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      elevation: 4,
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      symbol,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      "$units units, LTP: Rs. $ltp",
+                      style: const TextStyle(
+                        fontSize: 12,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Rs. ${value.toStringAsFixed(2)}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      "Rs. ${change.toStringAsFixed(2)}",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: isPositive ? Colors.green : Colors.red,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
           children: [
-            Expanded(
-              flex: 3, // Adjust the flex value to allocate space dynamically
+            Container(
+              margin: const EdgeInsets.fromLTRB(12.0, 3.0, 12.0, 12.0),
+              padding: const EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 6,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+                border: Border.all(color: Colors.grey.shade300),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    symbol,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis, // Prevents overflow
-                  ),
-                  Text(
-                    "Units: $units, LTP: Rs. $ltp",
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    "Rs. ${value.toStringAsFixed(2)}",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    "Rs. ${change.toStringAsFixed(2)}",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: isPositive ? Colors.green : Colors.red,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  _buildDetailRow("PoV", "Rs. 1,258"),
+                  _buildDetailRow(
+                      "Market Value", "Rs. ${wacc.toStringAsFixed(2)}"),
+                  _buildDetailRow("Daily Gain/Loss",
+                      "Rs. ${totalInvestment.toStringAsFixed(2)}"),
+                  _buildDetailRow(
+                      "Unrealised", "Rs. ${totalReturn.toStringAsFixed(2)}"),
+                  _buildDetailRow(
+                      "Realised", "Rs. ${totalReturn.toStringAsFixed(2)}"),
                 ],
               ),
             ),
           ],
         ),
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildDetailRow("WACC", "Rs. ${wacc.toStringAsFixed(2)}"),
-                _buildDetailRow("Total Investment",
-                    "Rs. ${totalInvestment.toStringAsFixed(2)}"),
-                _buildDetailRow(
-                    "Total Return", "Rs. ${totalReturn.toStringAsFixed(2)}"),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -358,8 +382,6 @@ class HoldingCard extends StatelessWidget {
     );
   }
 }
-
-
 
 class PortfolioRow extends StatelessWidget {
   final String title;
