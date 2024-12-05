@@ -68,7 +68,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
               ),
               Tab(
                 child: Text(
-                  'Watchlists',
+                  'Watchlist',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),

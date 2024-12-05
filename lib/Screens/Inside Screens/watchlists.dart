@@ -149,7 +149,7 @@ class _WatchlistsState extends State<Watchlists> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Own Watchlists',
+                    'Own Watchlist',
                     style: TextStyle(
                       fontSize: 16, // Smaller font size
                       fontWeight: FontWeight.bold,
@@ -197,7 +197,7 @@ class _WatchlistsState extends State<Watchlists> {
                           margin: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Theme(
                             data: Theme.of(context)
