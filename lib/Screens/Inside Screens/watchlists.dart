@@ -143,6 +143,158 @@ class _WatchlistsState extends State<Watchlists> {
             const SizedBox(
               height: 9.0,
             ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'System given watchlist',
+                    style: TextStyle(
+                      fontSize: 16, // Smaller font size
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black, // Black color
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: watchlist.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No companies in the watchlist. Please add some!',
+                        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: watchlist.length,
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        bottom: 80, // Adds padding to avoid overlap with FAB
+                      ),
+                      itemBuilder: (context, index) {
+                        final company = watchlist[index];
+                        return Card(
+                          elevation: 5,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Theme(
+                            data: Theme.of(context)
+                                .copyWith(dividerColor: Colors.transparent),
+                            child: ExpansionTile(
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Nabil',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              // color: Colors.blue[700],
+                                            ),
+                                          ),
+                                          // SizedBox(
+                                          //   width: 16,
+                                          // ),
+                                          // Text(
+                                          //   'Buy range: 100 - 150 ',
+                                          //   style: TextStyle(
+                                          //     fontSize: 12,
+                                          //   ),
+                                          // ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Buy, ',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          Text(
+                                            'TP1: 200',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete,
+                                        color: Colors.red),
+                                    onPressed: () =>
+                                        _deleteCompany(company['id']),
+                                  ),
+                                ],
+                              ),
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.fromLTRB(
+                                      12.0, 0.0, 12.0, 9.0),
+                                  padding: const EdgeInsets.all(12.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                    border:
+                                        Border.all(color: Colors.grey.shade300),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      _buildInfoRow('ID', '${company['id']}'),
+                                      _buildInfoRow(
+                                          'Trade Type', company['tradeType']),
+                                      _buildInfoRow(
+                                          'Buy Range', company['buyRange']),
+                                      _buildInfoRow('TP1', company['tp1']),
+                                      _buildInfoRow('Buying Pattern',
+                                          company['buyingPattern']),
+                                      _buildInfoRow(
+                                          'Period', company['period']),
+                                      _buildInfoRow(
+                                          'Stop Loss', company['stopLoss']),
+                                      _buildInfoRow(
+                                          'Risk Reward', company['riskReward']),
+                                      _buildInfoRow(
+                                        'Multi Bagger',
+                                        company['multiBagger'] ? 'Yes' : 'No',
+                                        color: company['multiBagger']
+                                            ? Colors.green
+                                            : Colors.red,
+                                        bold: true,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
