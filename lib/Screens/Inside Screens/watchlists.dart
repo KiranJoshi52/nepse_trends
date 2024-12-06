@@ -256,13 +256,69 @@ class _OwnWatchlistState extends State<OwnWatchlist> {
     );
   }
 
+  void _addItem(String symbol) {
+    setState(() {
+      watchlist.add({
+        "id": DateTime.now()
+            .millisecondsSinceEpoch, // Unique ID based on timestamp
+        "symbol": symbol,
+        "buyRange": "100-120",
+        "tp1": "130",
+        "buyingPattern": "Moderate",
+        "period": "Mid-term",
+        "stopLoss": "95",
+        "riskReward": "1:2",
+        "multiBaggar": false,
+        "actions": ["edit", "delete"]
+      });
+    });
+  }
+
+  void _showAddDialog() {
+    final TextEditingController symbolController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Add New Item'),
+          content: TextField(
+            controller: symbolController,
+            decoration: const InputDecoration(hintText: 'Enter Symbol'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (symbolController.text.isNotEmpty) {
+                  _addItem(symbolController.text);
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: watchlist.length,
+        itemCount: watchlist.length + 1, // Add 1 for SizedBox
         itemBuilder: (context, index) {
-          final item = watchlist[index]; // Adjust index for the list items
+          if (index == watchlist.length) {
+            return const SizedBox(height: 90); // Add the SizedBox at the end
+          }
+
+          final item = watchlist[index];
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: ExpansionTile(
@@ -307,6 +363,11 @@ class _OwnWatchlistState extends State<OwnWatchlist> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddDialog,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
+
