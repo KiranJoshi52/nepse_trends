@@ -27,7 +27,8 @@ class DashboardScreen extends StatelessWidget {
           ),
         ),
         title: const Text(
-          'Dashboard',
+          // 'Dashboard',
+          'Nepse Trends',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,

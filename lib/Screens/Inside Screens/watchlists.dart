@@ -281,7 +281,7 @@ class _OwnWatchlistState extends State<OwnWatchlist> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Add New Item'),
+          title: const Text('Add company'),
           content: TextField(
             controller: symbolController,
             decoration: const InputDecoration(hintText: 'Enter Symbol'),
