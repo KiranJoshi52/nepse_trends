@@ -106,6 +106,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 title: 'Market Value',
                 jsonData: jsonData2,
               ),
+              const SizedBox(
+                height: 26.0,
+              ),
             ],
           ),
         ),
