@@ -131,7 +131,7 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
 
           // PageView with Smooth Indicator
           SizedBox(
-            height: 290,
+            height: 350,
             child: PageView(
               controller: _pageController,
               children: [
@@ -254,6 +254,11 @@ Widget _buildOverallPortfolioCard() {
             const PortfolioRow("Capital gain tax", "Rs. 832.0 (+0.72%)"),
             const PortfolioRow("Commission on sale", "793.0"),
             const PortfolioRow("Realised gain/loss", "Rs. 600"),
+            const Divider(
+              height: 2.0,
+            ),
+            const PortfolioRow("Total Realised gain/loss", "-%", "red"),
+            const PortfolioRow("Total un-realised gain/loss", "-%", "green"),
           ],
         ),
       ),
@@ -289,6 +294,9 @@ Widget _systemGivenPortfolioCard() {
             const PortfolioRow("Catch signals", "-%"),
             const PortfolioRow("Lost signals", "-%"),
             const PortfolioRow("Accuracy", "-%"),
+            const Divider(height: 2),
+            const PortfolioRow("Net realised gain", "-%", "green"),
+            const PortfolioRow("Net un-realised gain", "-%", "red"),
           ],
         ),
       ),
@@ -443,8 +451,13 @@ class HoldingCard extends StatelessWidget {
 class PortfolioRow extends StatelessWidget {
   final String title;
   final String value;
+  final String? profitLossColor; // 'green' or 'red'
 
-  const PortfolioRow(this.title, this.value, {super.key});
+  const PortfolioRow(
+    this.title,
+    this.value, [
+    this.profitLossColor, // Optional parameter
+  ]) : super(key: null);
 
   @override
   Widget build(BuildContext context) {
@@ -455,14 +468,23 @@ class PortfolioRow extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 16, color: Colors.green[800]),
+            style: TextStyle(fontSize: 16, color: Colors.green[900]),
           ),
           Text(
             value,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: profitLossColor == "green"
+                  ? Colors.green
+                  : profitLossColor == "red"
+                      ? Colors.red
+                      : Colors.black, // Default to black if not specified
+            ),
           ),
         ],
       ),
     );
   }
 }
+
