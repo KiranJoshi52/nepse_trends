@@ -21,6 +21,7 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // NEPSE Info Section (Moved to the top)
           Padding(
@@ -82,7 +83,7 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
                 ),
                 const SizedBox(height: 16),
                 // Investor Type Dropdown
-                Container(
+                SizedBox(
                   height: 52, // Reduced height by 40% from 80
                   child: DropdownButtonFormField<String>(
                     value: selectedInvestorType,
@@ -109,25 +110,46 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
             ),
           ),
 
+          _buildPortfolioCard(),
+
+          const SizedBox(
+            height: 12.0,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 16.0,
+            ),
+            child: Text(
+              "Overall Portfolio vs System Given",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.green[900],
+              ),
+            ),
+          ),
+
           // PageView with Smooth Indicator
           SizedBox(
             height: 290,
             child: PageView(
               controller: _pageController,
               children: [
-                _buildPortfolioCard(),
                 _buildOverallPortfolioCard(),
+                _systemGivenPortfolioCard(),
               ],
             ),
           ),
-          SmoothPageIndicator(
-            controller: _pageController,
-            count: 2,
-            effect: const WormEffect(
-              dotColor: Colors.grey,
-              activeDotColor: Colors.green,
-              dotHeight: 10,
-              dotWidth: 10,
+          Center(
+            child: SmoothPageIndicator(
+              controller: _pageController,
+              count: 2,
+              effect: const WormEffect(
+                dotColor: Colors.grey,
+                activeDotColor: Colors.green,
+                dotHeight: 10,
+                dotWidth: 10,
+              ),
             ),
           ),
 
@@ -232,6 +254,41 @@ Widget _buildOverallPortfolioCard() {
             const PortfolioRow("Capital gain tax", "Rs. 832.0 (+0.72%)"),
             const PortfolioRow("Commission on sale", "793.0"),
             const PortfolioRow("Realised gain/loss", "Rs. 600"),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _systemGivenPortfolioCard() {
+  return Padding(
+    padding: const EdgeInsets.all(12.0),
+    child: Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      color: Colors.green[100],
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "System Given",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.green[900],
+              ),
+            ),
+            const SizedBox(height: 10),
+            const PortfolioRow("Total signal given", "30"),
+            const PortfolioRow("Win", "Yes"),
+            const PortfolioRow("Loss", "No"),
+            const PortfolioRow("Catch signals", "-%"),
+            const PortfolioRow("Lost signals", "-%"),
+            const PortfolioRow("Accuracy", "-%"),
           ],
         ),
       ),
