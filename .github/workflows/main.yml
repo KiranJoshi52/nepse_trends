@@ -1,0 +1,41 @@
+name: Flutter APK Build
+
+on:
+  push:
+    branches:
+      - Kiran-dev # Trigger build on pushes to the 'main' branch
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.22.2" # Replace with your Flutter version
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: flutter pub get
+
+      # Step 4: Build APK
+      - name: Build APK
+        run: flutter build apk --release
+
+      # Step 5: Upload APK artifact
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 7 # Set how many days to keep the artifact
