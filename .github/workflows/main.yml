@@ -1,26 +1,63 @@
-  on:
-    push:
-      branches:
-        - Kiran-dev
-  
-  name: Build My Apps
-  
-  jobs:
-    build:
-      name: Build and Release new apk
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-  
-        - uses: subosito/flutter-action@v2
-          with:
-            channel: 'stable'
-        - run: flutter pub get
-        - run: flutter build apk --release
-  
-        - name: Push to Releases
-          uses: ncipollo/release-action@v1
-          with:
-            artifacts: "build/app/outputs/apk/release/*"
-            tag: v0.0.1
-            token: ${{ secrets.GITHUB_TOKEN }}
+name: Flutter APK Build and Release
+
+on:
+  push:
+    branches:
+      - Kiran-dev # Trigger only on pushes to 'main' branch
+
+jobs:
+  build-and-release:
+    name: Build APK and Create Release
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.22.2"
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: flutter pub get
+
+      # Step 4: Build APK
+      - name: Build APK
+        run: flutter build apk --release
+
+      # Step 5: Upload APK as an artifact
+      - name: Upload APK as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      # Step 6: Create GitHub Release
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub automatically provides this token
+        with:
+          tag_name: v1.${{ github.run_number }} # Increment the version using run number
+          release_name: Release v1.${{ github.run_number }}
+          body: |
+            🎉 **Automated Release** 🎉
+            - Version: v1.${{ github.run_number }}
+            - Build: Release APK
+          draft: false
+          prerelease: false
+
+      # Step 7: Upload APK to the Release
+      - name: Upload APK to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: build/app/outputs/flutter-apk/app-release.apk
+          asset_name: app-release.apk
+          asset_content_type: application/vnd.android.package-archive
