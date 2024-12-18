@@ -25,7 +25,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.nepse_trends"
-    compileSdk = 35 // Update this based on your app requirements
+    compileSdk = 33 // Update this based on your app requirements
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
