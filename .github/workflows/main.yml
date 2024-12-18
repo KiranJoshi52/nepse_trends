@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - Kiran-dev
+      - Kiran-dev-workflows
 
 name: Build My Apps
 
